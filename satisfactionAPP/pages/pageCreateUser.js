@@ -1,26 +1,36 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
 
-const App = () => {
+const PageCreateUser = () => {
   const {width, height} = Dimensions.get('window');
 
   return (
     <View style={styles.androidLarge1}>
       <View style={styles.androidLarge1Child} />
+      <Text style={[styles.email, styles.senhaTypo]}>EMAIL</Text>
       <View style={[styles.androidLarge1Item, styles.androidLayout]} />
+      <Text style={[styles.confirmarSenha, styles.senhaTypo]}>
+        CONFIRMAR SENHA
+      </Text>
       <View style={[styles.androidLarge1Inner, styles.androidLayout]} />
-      <Text style={[styles.entrar, styles.ouFlexBox]}>{'ENTRAR'}</Text>
-      <Text style={[styles.cadastrarSe, styles.senhaTypo]}>{'CADASTRAR-SE'}</Text>
-      <Text style={[styles.ou, styles.ouFlexBox]}>{'OU'}</Text>
-      <Text style={[styles.senha, styles.senhaTypo]}>{'SENHA'}</Text>
-      <Text style={[styles.usurio, styles.senhaTypo]}>{'USUÁRIO'}</Text>
-      <Text style={[styles.bemVindo, styles.ouFlexBox]}>{'Bem-vindo'}</Text>
+      <View style={[styles.rectangleView, styles.androidLayout]} />
+      <View style={[styles.androidLarge1Child1, styles.androidLayout]} />
+      <Text style={[styles.cadastrarSe, styles.cadastrarSeFlexBox]}>
+        CADASTRAR-SE
+      </Text>
+      <Text style={[styles.senha, styles.senhaTypo]}>SENHA</Text>
+      <Text style={[styles.usurio, styles.senhaTypo]}>USUÁRIO</Text>
       <Image
         style={styles.magnifyingGlassElementBackIcon}
         resizeMode="cover"
         source={require('./magnifying-glass-element-back-to-school-icon-set-png-1.png')}
       />
-      <Text style={[styles.satisfactionapp, styles.ouFlexBox]}>{'SatisfactionAPP'}</Text>
+      <Text
+        style={[styles.satisfactionapp, styles.cadastrarSeFlexBox]}
+        adjustsFontSizeToFit
+        numberOfLines={1}>
+        SatisfactionAPP
+      </Text>
       <Image
         style={styles.images1Icon}
         resizeMode="cover"
@@ -31,83 +41,72 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  androidLayout: {
-    height: 30,
-    width: 160,
-    backgroundColor: '#fff',
-    left: 98,
-    position: 'absolute',
-  },
-  ouFlexBox: {
-    textAlign: 'left',
-    color: '#fff',
-    position: 'absolute',
-  },
   senhaTypo: {
-    width: 100,
+    height: 15,
+    left: 101,
     textAlign: 'left',
     color: '#fff',
     fontFamily: 'Inter-Regular',
     fontSize: 12,
     position: 'absolute',
   },
+  androidLayout: {
+    height: 30,
+    width: 160,
+    backgroundColor: '#fff',
+    left: 101,
+    position: 'absolute',
+  },
+  cadastrarSeFlexBox: {
+    textAlign: 'left',
+    color: '#fff',
+    position: 'absolute',
+  },
   androidLarge1Child: {
-    top: 269,
+    top: 262,
     left: 56,
     backgroundColor: '#3d3838',
     width: 250,
     height: 335,
     position: 'absolute',
   },
+  email: {
+    top: 362,
+    width: 100,
+  },
   androidLarge1Item: {
-    top: 384,
+    top: 377,
+  },
+  confirmarSenha: {
+    top: 473,
+    width: 150,
   },
   androidLarge1Inner: {
-    top: 443,
+    top: 488,
   },
-  entrar: {
-    top: 515,
-    left: 151,
-    width: 52,
-    height: 15,
-    fontFamily: 'Inter-Regular',
-    color: '#fff',
-    fontSize: 12,
+  rectangleView: {
+    top: 323,
+  },
+  androidLarge1Child1: {
+    top: 431,
   },
   cadastrarSe: {
-    top: 576,
-    left: 128,
+    top: 569,
+    left: 131,
     height: 20,
-  },
-  ou: {
-    top: 546,
-    left: 165,
-    width: 32,
-    height: 19,
+    width: 100,
     fontFamily: 'Inter-Regular',
-    color: '#fff',
     fontSize: 12,
+    textAlign: 'left',
+    color: '#fff',
   },
   senha: {
-    top: 423,
-    height: 15,
-    left: 98,
+    top: 416,
     width: 100,
   },
   usurio: {
-    top: 364,
-    height: 35,
-    left: 98,
+    top: 308,
     width: 100,
-  },
-  bemVindo: {
-    top: 296,
-    left: 123,
-    fontSize: 20,
-    width: 122,
-    height: 33,
-    fontFamily: 'Inter-Regular',
-    color: '#fff',
   },
   magnifyingGlassElementBackIcon: {
     top: 92,
@@ -140,4 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default PageCreateUser;
