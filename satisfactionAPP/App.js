@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
 
-const AndroidLarge = () => {
+const App = () => {
   const {width, height} = Dimensions.get('window');
 
   return (
@@ -140,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AndroidLarge;
+export default App;
