@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import Lupa from "../assets/lupa.png";
+import Inatel from "../assets/inatel.png";
 
 const PageAdminRespostas = () => {
   return (
@@ -9,8 +11,8 @@ const PageAdminRespostas = () => {
       <Text style={styles.pesquisa2}>PESQUISA 2</Text>
       <Text style={styles.pesquisa3}>PESQUISA 3</Text>
       <Text style={styles.pesquisa4}>PESQUISA 4</Text>
-      <Image style={styles.images1Icon} source="images 1.png" />
-      <Image style={styles.magnifyingGlassElementBackIcon} source="magnifying-glass-element-back-to-school-icon-set-png 1.png" />
+      <Image style={styles.images1Icon} source={Inatel} />
+      <Image style={styles.magnifyingGlassElementBackIcon} source={Lupa} />
       <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
     </View>
   );
