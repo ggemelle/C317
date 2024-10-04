@@ -1,5 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet, View, Image, Dimensions} from 'react-native';
+import Lupa from "../assets/lupa.png";
+import Inatel from "../assets/inatel.png";
 
 const PageRespondeUser = () => {
   const {width, height} = Dimensions.get('window');
@@ -17,12 +19,12 @@ const PageRespondeUser = () => {
       <Image
         style={styles.images1Icon}
         resizeMode="cover"
-        source={require('./images-1.png')}
+        source={Inatel}
       />
       <Image
         style={styles.magnifyingGlassElementBackIcon}
         resizeMode="cover"
-        source={require('./magnifying-glass-element-back-to-school-icon-set-png-1.png')}
+        source={Lupa}
       />
       <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
     </View>

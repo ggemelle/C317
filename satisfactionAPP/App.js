@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
-import Lupa from "./assets/lupa";
-import Inatel from "./assets/Inatel";
-import PageCreateUser from "./pages/pageCreateUser";
-import PagePesquisaUser from "./pages/pagePesquisaUser";
-import pageRespondeUser from "./pages/pageRespondeUser";
-import PageAdminPerguntas from "./pages/pageAdminPerguntas";
-import pageAdminRespostas from "./pages/pageAdminRespostas";
+import Lupa from "./assets/lupa.png";
+import Inatel from "./assets/inatel.png";
+import PageCreateUser from "./pages/pageCreateUser.js";
+import PagePesquisaUser from "./pages/pagePesquisaUser.js";
+import pageRespondeUser from "./pages/pageRespondeUser.js";
+import PageAdminPerguntas from "./pages/pageAdminPerguntas.js";
+import pageAdminRespostas from "./pages/pageAdminRespostas.js";
 
 
 const App = () => {
@@ -26,13 +26,13 @@ const App = () => {
       <Image
         style={styles.magnifyingGlassElementBackIcon}
         resizeMode="cover"
-        source={require('./lupa.png')}
+        source={Lupa}
       />
       <Text style={[styles.satisfactionapp, styles.ouFlexBox]}>{'SatisfactionAPP'}</Text>
       <Image
         style={styles.images1Icon}
         resizeMode="cover"
-        source={require('./inatel.png')}
+        source={Inatel}
       />
     </View>
   );

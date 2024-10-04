@@ -1,5 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
+import Lupa from "../assets/lupa.png";
+import Inatel from "../assets/inatel.png";
 
 const PageCreateUser = () => {
   const {width, height} = Dimensions.get('window');
@@ -23,7 +25,7 @@ const PageCreateUser = () => {
       <Image
         style={styles.magnifyingGlassElementBackIcon}
         resizeMode="cover"
-        source={require('./magnifying-glass-element-back-to-school-icon-set-png-1.png')}
+        source={Lupa}
       />
       <Text
         style={[styles.satisfactionapp, styles.cadastrarSeFlexBox]}
@@ -34,7 +36,7 @@ const PageCreateUser = () => {
       <Image
         style={styles.images1Icon}
         resizeMode="cover"
-        source={require('./images-1.png')}
+        source={Inatel}
       />
     </View>
   );

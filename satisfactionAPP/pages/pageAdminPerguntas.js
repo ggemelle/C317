@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import Lupa from "../assets/lupa.png";
+import Inatel from "../assets/inatel.png";
+
 
 const PageAdminPerguntas = () => {
   return (
     <View style={styles.container}>
-      <Image style={styles.magnifyingGlassElementBackIcon} source="magnifying-glass-element-back-to-school-icon-set-png 1.png" />
+      <Image style={styles.magnifyingGlassElementBackIcon} source={Lupa} />
       <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
       <Text style={styles.adicionarUmaPesquisa}>Adicionar uma pesquisa</Text>
       <Text style={styles.editarUmaPesquisa}>Editar uma pesquisa</Text>
       <Text style={styles.excluirUmaPesquisa}>Excluir uma pesquisa</Text>
       <Text style={styles.visualizarPesquisas}>Visualizar pesquisas</Text>
-      <Image style={styles.images1Icon} source="images 1.png" />
-      <Image style={styles.androidLarge2ChildBackground} source="androidLarge2ChildBackground.png" />
+      <Image style={styles.images1Icon} source={Inatel}/>
     </View>
   );
 };
