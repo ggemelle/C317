@@ -1,5 +1,13 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
+import Lupa from "./assets/lupa";
+import Inatel from "./assets/Inatel";
+import PageCreateUser from "./pages/pageCreateUser";
+import PagePesquisaUser from "./pages/pagePesquisaUser";
+import pageRespondeUser from "./pages/pageRespondeUser";
+import PageAdminPerguntas from "./pages/pageAdminPerguntas";
+import pageAdminRespostas from "./pages/pageAdminRespostas";
+
 
 const App = () => {
   const {width, height} = Dimensions.get('window');
@@ -18,13 +26,13 @@ const App = () => {
       <Image
         style={styles.magnifyingGlassElementBackIcon}
         resizeMode="cover"
-        source={require('./magnifying-glass-element-back-to-school-icon-set-png-1.png')}
+        source={require('./lupa.png')}
       />
       <Text style={[styles.satisfactionapp, styles.ouFlexBox]}>{'SatisfactionAPP'}</Text>
       <Image
         style={styles.images1Icon}
         resizeMode="cover"
-        source={require('./images-1.png')}
+        source={require('./inatel.png')}
       />
     </View>
   );
