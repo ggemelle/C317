@@ -1,9 +1,14 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Inatel from "./assets/inatel.png";
 import Lupa from "./assets/lupa.png";
+import PageCreateUser from './pages/pageCreateUser'; // Importar a tela de criação de usuário
 
-const App = () => {
+const Stack = createStackNavigator();
+
+const HomeScreen = ({ navigation }) => {
   const { width, height } = Dimensions.get('window');
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
@@ -27,14 +32,14 @@ const App = () => {
     Alert.alert('Login realizado', `Usuário: ${usuario}`);
   };
 
-  const handleCadastrar = () => {
-    Alert.alert('Cadastro', 'Redirecionando para página de cadastro...');
-  };
-
   return (
     <View style={styles.androidLarge1}>
-      <View style={styles.androidLarge1Child} />
-      <View style={styles.container}>
+      <Image style={styles.magnifyingGlassElementBackIcon} resizeMode="contain" source={Lupa} />
+      <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
+
+      <View style={styles.formContainer}>
+        <Text style={styles.bemVindo}>Bem-vindo</Text>
+        
         <TextInput
           style={styles.input}
           placeholder="Usuário"
@@ -52,161 +57,95 @@ const App = () => {
         />
         
         <TouchableOpacity style={styles.button} onPress={handleEntrar}>
-          <Text style={styles.entrar}>ENTRAR</Text>
+          <Text style={styles.buttonText}>ENTRAR</Text>
         </TouchableOpacity>
 
         {mensagem ? <Text style={styles.mensagem}>{mensagem}</Text> : null}
 
-        <TouchableOpacity style={styles.button} onPress={handleCadastrar}>
-          <Text style={styles.cadastrarSe}>CADASTRAR-SE</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateUser')}>
+          <Text style={styles.buttonText}>CADASTRAR-SE</Text>
         </TouchableOpacity>
       </View>
 
-      <Text style={[styles.ou, styles.ouFlexBox]}>OU</Text>
-      <Text style={[styles.senha, styles.senhaTypo]}>SENHA</Text>
-      <Text style={[styles.usurio, styles.senhaTypo]}>USUÁRIO</Text>
-      <Text style={[styles.bemVindo, styles.ouFlexBox]}>Bem-vindo</Text>
-      <Image
-        style={styles.magnifyingGlassElementBackIcon}
-        resizeMode="cover"
-        source={Lupa}
-      />
-      <Text style={[styles.satisfactionapp, styles.ouFlexBox]}>SatisfactionAPP</Text>
-      <Image
-        style={styles.images1Icon}
-        resizeMode="cover"
-        source={Inatel}
-      />
+      <Image style={styles.images1Icon} resizeMode="contain" source={Inatel} />
     </View>
   );
 };
 
+// Função principal App que define a navegação entre as telas
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="CreateUser" component={PageCreateUser} options={{ title: 'Criar Usuário' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 const styles = StyleSheet.create({
-  androidLayout: {
-    height: 30,
-    width: 160,
-    backgroundColor: '#fff',
-    left: 98,
-    position: 'absolute',
+  androidLarge1: {
+    backgroundColor: '#b72805',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  magnifyingGlassElementBackIcon: {
+    width: 100,
+    height: 100,
+    marginTop: 50,
+  },
+  satisfactionapp: {
+    fontSize: 40,
+    fontFamily: 'Cursive', // Troque para uma fonte similar
+    color: '#fff',
+    marginVertical: 20,
+  },
+  formContainer: {
+    width: '80%',
+    backgroundColor: '#3d3838',
+    borderRadius: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+  },
+  bemVindo: {
+    fontSize: 20,
+    color: '#fff',
+    marginBottom: 20,
   },
   input: {
+    width: '90%',
     height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    paddingHorizontal: 8,
     backgroundColor: '#fff',
-    color: '#000',
-    width: '50%',
-    marginBottom: 10,
-    alignSelf: 'center',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginVertical: 10,
   },
   button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    //width: '60%',
-    //backgroundColor: '#f07c00',
-    padding: 10,
+    width: '90%',
+    backgroundColor: '#b72805',  // Cor alterada para vermelho
     borderRadius: 5,
+    padding: 10,
+    alignItems: 'center',
     marginVertical: 10,
-    alignSelf: 'center',
   },
-  ouFlexBox: {
-    textAlign: 'left',
+  buttonText: {
     color: '#fff',
-    position: 'absolute',
-  },
-  senhaTypo: {
-    width: 100,
-    textAlign: 'left',
-    color: '#fff',
-    fontFamily: 'Inter-Regular',
-    fontSize: 12,
-    position: 'absolute',
-  },
-  androidLarge1Child: {
-    top: 269,
-    left: 56,
-    backgroundColor: '#3d3838',
-    width: 250,
-    height: 335,
-    position: 'absolute',
-  },
-  container: {
-    top: 384,
-    alignItems: 'center', // centraliza os elementos no eixo horizontal
-  },
-  entrar: {
-    color: '#fff',
-    fontSize: 12,
-  },
-  cadastrarSe: {
-    color: '#fff',
-    fontSize: 12,
-    textAlign: 'center',
+    fontSize: 16,
   },
   mensagem: {
     color: '#fff',
     textAlign: 'center',
     marginTop: 10,
   },
-  ou: {
-    top: 546,
-    left: 165,
-    width: 32,
-    height: 19,
-    fontFamily: 'Inter-Regular',
-    color: '#fff',
-    fontSize: 12,
-  },
-  senha: {
-    top: 423,
-    height: 15,
-    left: 98,
-    width: 100,
-  },
-  usurio: {
-    top: 364,
-    height: 35,
-    left: 98,
-    width: 100,
-  },
-  bemVindo: {
-    top: 296,
-    left: 123,
-    fontSize: 20,
-    width: 122,
-    height: 33,
-    fontFamily: 'Inter-Regular',
-    color: '#fff',
-  },
-  magnifyingGlassElementBackIcon: {
-    top: 120,
-    left: 189,
-    width: 117,
-    height: 134,
-    position: 'absolute',
-  },
-  satisfactionapp: {
-    top: 38,
-    left: 62,
-    fontSize: 50,
-    fontFamily: 'Inspiration-Regular',
-    width: 270,
-    height: 220,
-  },
   images1Icon: {
-    top: 743,
-    left: 87,
-    width: 187,
-    height: 52,
-    position: 'absolute',
-  },
-  androidLarge1: {
-    backgroundColor: '#b72805',
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
+    width: 150,
+    height: 50,
+    marginTop: 50,
   },
 });
 
