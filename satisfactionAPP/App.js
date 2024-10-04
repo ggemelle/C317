@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Inatel from "./assets/inatel.png";
 import Lupa from "./assets/lupa.png";
 
@@ -7,11 +7,34 @@ const App = () => {
   const { width, height } = Dimensions.get('window');
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
+  const [mensagem, setMensagem] = useState('');
+
+  const handleEntrar = () => {
+    if (!usuario || !senha) {
+      setMensagem('Preencha os campos de usuário e senha.');
+      return;
+    }
+
+    // Exemplo de validação simples para email (pode ser melhorado)
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(usuario)) {
+      setMensagem('Por favor, insira um e-mail válido.');
+      return;
+    }
+
+    // Se tudo estiver correto
+    setMensagem('Login realizado com sucesso!');
+    Alert.alert('Login realizado', `Usuário: ${usuario}`);
+  };
+
+  const handleCadastrar = () => {
+    Alert.alert('Cadastro', 'Redirecionando para página de cadastro...');
+  };
 
   return (
     <View style={styles.androidLarge1}>
       <View style={styles.androidLarge1Child} />
-      <View style={[styles.androidLarge1Item, styles.androidLayout]}>
+      <View style={styles.container}>
         <TextInput
           style={styles.input}
           placeholder="Usuário"
@@ -19,8 +42,6 @@ const App = () => {
           value={usuario}
           onChangeText={setUsuario}
         />
-      </View>
-      <View style={[styles.androidLarge1Inner, styles.androidLayout]}>
         <TextInput
           style={styles.input}
           placeholder="Senha"
@@ -29,9 +50,18 @@ const App = () => {
           value={senha}
           onChangeText={setSenha}
         />
+        
+        <TouchableOpacity style={styles.button} onPress={handleEntrar}>
+          <Text style={styles.entrar}>ENTRAR</Text>
+        </TouchableOpacity>
+
+        {mensagem ? <Text style={styles.mensagem}>{mensagem}</Text> : null}
+
+        <TouchableOpacity style={styles.button} onPress={handleCadastrar}>
+          <Text style={styles.cadastrarSe}>CADASTRAR-SE</Text>
+        </TouchableOpacity>
       </View>
-      <Text style={[styles.entrar, styles.ouFlexBox]}>ENTRAR</Text>
-      <Text style={[styles.cadastrarSe, styles.senhaTypo]}>CADASTRAR-SE</Text>
+
       <Text style={[styles.ou, styles.ouFlexBox]}>OU</Text>
       <Text style={[styles.senha, styles.senhaTypo]}>SENHA</Text>
       <Text style={[styles.usurio, styles.senhaTypo]}>USUÁRIO</Text>
@@ -60,12 +90,25 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   input: {
-    height: 30,
+    height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
     paddingHorizontal: 8,
     backgroundColor: '#fff',
     color: '#000',
+    width: '50%',
+    marginBottom: 10,
+    alignSelf: 'center',
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    //width: '60%',
+    //backgroundColor: '#f07c00',
+    padding: 10,
+    borderRadius: 5,
+    marginVertical: 10,
+    alignSelf: 'center',
   },
   ouFlexBox: {
     textAlign: 'left',
@@ -88,25 +131,23 @@ const styles = StyleSheet.create({
     height: 335,
     position: 'absolute',
   },
-  androidLarge1Item: {
+  container: {
     top: 384,
-  },
-  androidLarge1Inner: {
-    top: 443,
+    alignItems: 'center', // centraliza os elementos no eixo horizontal
   },
   entrar: {
-    top: 515,
-    left: 151,
-    width: 52,
-    height: 15,
-    fontFamily: 'Inter-Regular',
     color: '#fff',
     fontSize: 12,
   },
   cadastrarSe: {
-    top: 576,
-    left: 128,
-    height: 20,
+    color: '#fff',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  mensagem: {
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 10,
   },
   ou: {
     top: 546,
