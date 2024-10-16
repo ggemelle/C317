@@ -4,7 +4,12 @@ import React, { useState } from 'react';
 import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Inatel from "./assets/inatel.png";
 import Lupa from "./assets/lupa.png";
-import PageCreateUser from './pages/pageCreateUser'; // Importar a tela de criação de usuário
+import PageCreateUser from './pages/pageCreateUser.js'; // Importar a tela de criação de usuário
+import PageAdminPerguntas from './pages/pageAdminPerguntas.js';
+import PageAdminRespostas from './pages/pageAdminRespostas.js';
+import PagePesquisaUser from './pages/pagePesquisaUser.js';
+import PageRespondeUser from './pages/pageRespondeUser.js';
+
 
 const Stack = createStackNavigator();
 
@@ -78,7 +83,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="CreateUser" component={PageCreateUser} options={{ title: 'Criar Usuário' }} />
+        <Stack.Screen name="CreateUser" component={PageRespondeUser} options={{ title: 'Criar Usuário' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
