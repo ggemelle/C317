@@ -4,12 +4,8 @@ import React, { useState } from 'react';
 import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Inatel from "./assets/inatel.png";
 import Lupa from "./assets/lupa.png";
-import PageCreateUser from './pages/pageCreateUser.js'; // Importar a tela de criação de usuário
-import PageAdminPerguntas from './pages/pageAdminPerguntas.js';
-import PageAdminRespostas from './pages/pageAdminRespostas.js';
-import PagePesquisaUser from './pages/pagePesquisaUser.js';
-import PageRespondeUser from './pages/pageRespondeUser.js';
-
+import PageAdminRespostas from './pages/pageAdminRespostas';
+import PageCreateUser from './pages/pageCreateUser'; // Importar a tela de criação de usuário
 
 const Stack = createStackNavigator();
 
@@ -70,6 +66,11 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateUser')}>
           <Text style={styles.buttonText}>CADASTRAR-SE</Text>
         </TouchableOpacity>
+
+        {/* Botão para navegar para a página de pesquisa */}
+        <TouchableOpacity style={styles.buttonTest} onPress={() => navigation.navigate('PageAdminRespostas')}>
+          <Text style={styles.buttonText}>TESTE</Text>
+        </TouchableOpacity>
       </View>
 
       <Image style={styles.images1Icon} resizeMode="contain" source={Inatel} />
@@ -83,7 +84,8 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="CreateUser" component={PageRespondeUser} options={{ title: 'Criar Usuário' }} />
+        <Stack.Screen name="CreateUser" component={PageCreateUser} options={{ title: 'Criar Usuário' }} />
+        <Stack.Screen name="PageAdminRespostas" component={PageAdminRespostas} options={{ title: 'Page Admin Respostas' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -133,6 +135,14 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     backgroundColor: '#b72805',  // Cor alterada para vermelho
+    borderRadius: 5,
+    padding: 10,
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  buttonTest: {
+    width: '90%',
+    backgroundColor: '#007BFF',  // Cor azul para diferenciar o botão de teste
     borderRadius: 5,
     padding: 10,
     alignItems: 'center',

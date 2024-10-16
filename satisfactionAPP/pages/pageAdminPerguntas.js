@@ -1,19 +1,43 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import Lupa from "../assets/lupa.png";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Inatel from "../assets/inatel.png";
 
-
-const PageAdminPerguntas = () => {
+const PageAdminPerguntas = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Image style={styles.magnifyingGlassElementBackIcon} source={Lupa} />
       <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
-      <Text style={styles.adicionarUmaPesquisa}>Adicionar uma pesquisa</Text>
-      <Text style={styles.editarUmaPesquisa}>Editar uma pesquisa</Text>
-      <Text style={styles.excluirUmaPesquisa}>Excluir uma pesquisa</Text>
-      <Text style={styles.visualizarPesquisas}>Visualizar pesquisas</Text>
-      <Image style={styles.images1Icon} source={Inatel}/>
+
+      <View style={styles.optionsContainer}>
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('AdicionarPesquisa')} // Navegação para adicionar pesquisa
+        >
+          <Text style={styles.buttonText}>Adicionar uma pesquisa</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('EditarPesquisa')} // Navegação para editar pesquisa
+        >
+          <Text style={styles.buttonText}>Editar uma pesquisa</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('ExcluirPesquisa')} // Navegação para excluir pesquisa
+        >
+          <Text style={styles.buttonText}>Excluir uma pesquisa</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('VisualizarPesquisas')} // Navegação para visualizar pesquisas
+        >
+          <Text style={styles.buttonText}>Visualizar pesquisas</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Image style={styles.images1Icon} source={Inatel} />
     </View>
   );
 };
@@ -22,55 +46,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#b72805',
-  },
-  magnifyingGlassElementBackIcon: {
-    width: 140,
-    height: 140,
-    top: '30%',
-    left: '30%',
+    alignItems: 'center',
+    justifyContent: 'flex-start', // O conteúdo começa no topo
+    paddingTop: 20,
   },
   satisfactionapp: {
     fontSize: 42,
     fontFamily: 'Inspiration-Regular',
-    left: '30%',
-    top: '5%',
+    marginTop: 20,
+    color: '#fff',
   },
-  adicionarUmaPesquisa: {
+  optionsContainer: {
+    flex: 1,
+    justifyContent: 'center', // Centraliza as opções verticalmente
+    width: '100%', // Largura total para o container das opções
+    alignItems: 'center', // Alinhamento horizontal
+  },
+  button: {
+    backgroundColor: '#3d3838',
+    borderRadius: 10,
+    padding: 15,
+    width: '80%', // Largura do botão
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  buttonText: {
     fontSize: 16,
     fontFamily: 'Inter-Black',
-    left: '30%',
-    top: '40%',
-  },
-  editarUmaPesquisa: {
-    fontSize: 16,
-    fontFamily: 'Inter-Black',
-    left: '30%',
-    top: '55%',
-  },
-  excluirUmaPesquisa: {
-    fontSize: 16,
-    fontFamily: 'Inter-Black',
-    left: '30%',
-    top: '70%',
-  },
-  visualizarPesquisas: {
-    fontSize: 16,
-    fontFamily: 'Inter-Black',
-    left: '30%',
-    top: '85%',
+    color: '#fff',
   },
   images1Icon: {
     width: 140,
     height: 40,
-    top: '95%',
-    left: '30%',
-  },
-  androidLarge2ChildBackground: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
+    marginBottom: 20, // Margem inferior para afastar da parte inferior
   },
 });
 

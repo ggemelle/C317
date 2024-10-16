@@ -1,140 +1,106 @@
-import React from 'react';
-import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
-import Lupa from "../assets/lupa.png";
+import { useNavigation } from '@react-navigation/native'; // Importando hook de navegação
+import React, { useState } from 'react';
+import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Inatel from "../assets/inatel.png";
 
 const PagePesquisaUser = () => {
-  const {width, height} = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
+  const navigation = useNavigation(); // Hook de navegação
+
+  // Lista de pesquisas disponíveis
+  const [pesquisas, setPesquisas] = useState([
+    { id: '1', nome: 'PESQUISA 1', peso: 20 },
+    { id: '2', nome: 'PESQUISA 2', peso: 10 },
+    { id: '3', nome: 'PESQUISA 3', peso: 20 },
+    { id: '4', nome: 'PESQUISA 4', peso: 50 },
+  ]);
+
+  const handlePesquisaSelecionada = (id) => {
+    console.log(`Pesquisa selecionada: ${id}`);
+    // Navegar para a página "pageRespondeUser" passando o ID da pesquisa como parâmetro
+    navigation.navigate('pageRespondeUser', { pesquisaId: id });
+  };
+
+  // Função que renderiza cada item da lista de pesquisas
+  const renderPesquisaItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.pesquisaItem}
+      onPress={() => handlePesquisaSelecionada(item.id)}
+    >
+      <Text style={styles.pesquisaText}>{item.nome}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.androidLarge1}>
-      <View style={[styles.androidLarge1Child, styles.androidLayout]} />
-      <Text style={[styles.pesquisa1, styles.pesquisaFlexBox]}>
-        PESQUISA 1
+      <Text style={[styles.satisfactionapp]}>
+        SatisfactionAPP
       </Text>
-      <View style={[styles.androidLarge1Item, styles.androidLayout]} />
-      <Text style={[styles.pesquisa2, styles.pesquisaFlexBox]}>
-        PESQUISA 2
-      </Text>
-      <View style={[styles.androidLarge1Inner, styles.androidLayout]} />
-      <Text style={[styles.pesquisa3, styles.pesquisaFlexBox]}>
-        PESQUISA 3
-      </Text>
-      <View style={[styles.rectangleView, styles.androidLayout]} />
-      <Text style={[styles.pesquisa4, styles.pesquisaFlexBox]}>
-        PESQUISA 4
-      </Text>
-      <Text style={[styles.pesquisasDisponiveis, styles.pesquisaFlexBox]}>
+
+      <Text style={[styles.pesquisasDisponiveis]}>
         Pesquisas disponíveis
       </Text>
+
+      <FlatList
+        data={pesquisas}
+        renderItem={renderPesquisaItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.pesquisaList}
+      />
+
       <Image
         style={styles.images1Icon}
         resizeMode="cover"
         source={Inatel}
       />
-      <Image
-        style={styles.magnifyingGlassElementBackIcon}
-        resizeMode="cover"
-        source={Lupa}
-      />
-      <Text
-        style={[styles.satisfactionapp, styles.pesquisaFlexBox]}
-        adjustsFontSizeToFit
-        numberOfLines={1}>
-        SatisfactionAPP
-      </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  androidLayout: {
-    height: 65,
-    width: 300,
-    backgroundColor: '#3d3838',
-    left: 30,
-    position: 'absolute',
-  },
-  pesquisaFlexBox: {
-    textAlign: 'left',
-    color: '#fff',
-    position: 'absolute',
-  },
-  androidLarge1Child: {
-    top: 312,
-  },
-  pesquisa1: {
-    top: 326,
-    fontFamily: 'Inter-Regular',
-    fontSize: 30,
-    color: '#fff',
-    left: 43,
-  },
-  androidLarge1Item: {
-    top: 408,
-  },
-  pesquisa2: {
-    top: 422,
-    fontFamily: 'Inter-Regular',
-    fontSize: 30,
-    color: '#fff',
-    left: 43,
-  },
-  androidLarge1Inner: {
-    top: 509,
-  },
-  pesquisa3: {
-    top: 518,
-    fontFamily: 'Inter-Regular',
-    fontSize: 30,
-    color: '#fff',
-    left: 43,
-  },
-  rectangleView: {
-    top: 610,
-  },
-  pesquisa4: {
-    top: 625,
-    fontFamily: 'Inter-Regular',
-    fontSize: 30,
-    color: '#fff',
-    left: 43,
-  },
-  pesquisasDisponiveis: {
-    top: 231,
-    left: 20,
-    fontFamily: 'Inter-Regular',
-    fontSize: 30,
-    color: '#fff',
-  },
-  images1Icon: {
-    top: 743,
-    left: 87,
-    width: 187,
-    height: 52,
-    position: 'absolute',
-  },
-  magnifyingGlassElementBackIcon: {
-    top: 79,
-    left: 203,
-    width: 117,
-    height: 134,
-    position: 'absolute',
-  },
-  satisfactionapp: {
-    top: 25,
-    left: 76,
-    fontSize: 64,
-    fontFamily: 'Inspiration-Regular',
-    width: 196,
-    height: 78,
-  },
   androidLarge1: {
     backgroundColor: '#b72805',
     flex: 1,
     width: '100%',
     height: '100%',
-    overflow: 'hidden',
+    alignItems: 'center', // Alinhando ao centro
+    justifyContent: 'flex-start', // Conteúdo começa no topo
+    paddingTop: 20,
+  },
+  pesquisasDisponiveis: {
+    fontFamily: 'Inter-Regular',
+    fontSize: 28,
+    color: '#fff',
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  pesquisaList: {
+    paddingHorizontal: 20,
+  },
+  pesquisaItem: {
+    height: 65,
+    width: 300,
+    backgroundColor: '#3d3838',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  pesquisaText: {
+    fontSize: 25,
+    color: '#fff',
+    fontFamily: 'Inter-Regular',
+  },
+  images1Icon: {
+    width: 187,
+    height: 52,
+    marginTop: 30,
+  },
+  satisfactionapp: {
+    fontSize: 40,
+    color: '#fff',
+    fontFamily: 'Inter-Regular',
+    marginBottom: 30,
   },
 });
 

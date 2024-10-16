@@ -1,19 +1,37 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import Lupa from "../assets/lupa.png";
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import Inatel from "../assets/inatel.png";
 
 const PageAdminRespostas = () => {
+  // Simulação de dados de respostas de pesquisas
+  const respostasPesquisas = [
+    { id: '1', pesquisa: 'PESQUISA 1', resposta: 'Resposta da pesquisa 1' },
+    { id: '2', pesquisa: 'PESQUISA 2', resposta: 'Resposta da pesquisa 2' },
+    { id: '3', pesquisa: 'PESQUISA 3', resposta: 'Resposta da pesquisa 3' },
+    { id: '4', pesquisa: 'PESQUISA 4', resposta: 'Resposta da pesquisa 4' },
+  ];
+
+  // Função para renderizar cada item da lista de respostas
+  const renderItem = ({ item }) => (
+    <View style={styles.pesquisaContainer}>
+      <Text style={styles.pesquisaNome}>{item.pesquisa}</Text>
+      <Text style={styles.pesquisaResposta}>{item.resposta}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-      <Text style={styles.verResultadoDe}>Ver resultado de pesquisas disponíveis</Text>
-      <Text style={styles.pesquisa1}>PESQUISA 1</Text>
-      <Text style={styles.pesquisa2}>PESQUISA 2</Text>
-      <Text style={styles.pesquisa3}>PESQUISA 3</Text>
-      <Text style={styles.pesquisa4}>PESQUISA 4</Text>
-      <Image style={styles.images1Icon} source={Inatel} />
-      <Image style={styles.magnifyingGlassElementBackIcon} source={Lupa} />
       <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
+      <Text style={styles.verResultadoDe}>Ver resultado de pesquisas disponíveis</Text>
+
+      <FlatList
+        data={respostasPesquisas}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listaContainer}
+      />
+
+      <Image style={styles.images1Icon} source={Inatel} />
     </View>
   );
 };
@@ -22,54 +40,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#b72805',
-  },
-  verResultadoDe: {
-    fontSize: 20,
-    fontFamily: 'Inter-Regular',
-    left: '30%',
-    top: '5%',
-  },
-  pesquisa1: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    left: '30%',
-    top: '30%',
-  },
-  pesquisa2: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    left: '30%',
-    top: '50%',
-  },
-  pesquisa3: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    left: '30%',
-    top: '70%',
-  },
-  pesquisa4: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    left: '30%',
-    top: '90%',
-  },
-  images1Icon: {
-    width: 140,
-    height: 40,
-    top: '95%',
-    left: '30%',
-  },
-  magnifyingGlassElementBackIcon: {
-    width: 140,
-    height: 140,
-    top: '30%',
-    left: '30%',
+    alignItems: 'center', // Centraliza o conteúdo horizontalmente
+    paddingTop: 20, // Margem superior
   },
   satisfactionapp: {
     fontSize: 42,
     fontFamily: 'Inspiration-Regular',
-    left: '30%',
-    top: '5%',
+    color: '#fff',
+    marginBottom: 20, // Margem inferior
+  },
+  verResultadoDe: {
+    fontSize: 20,
+    fontFamily: 'Inter-Regular',
+    color: '#fff',
+    marginBottom: 20, // Margem inferior
+  },
+  listaContainer: {
+    paddingHorizontal: 20,
+    flexGrow: 1, // Faz com que a lista ocupe o espaço disponível
+  },
+  pesquisaContainer: {
+    backgroundColor: '#3d3838',
+    borderRadius: 10,
+    padding: 15,
+    marginVertical: 10,
+  },
+  pesquisaNome: {
+    fontSize: 18,
+    fontFamily: 'Inter-Black',
+    color: '#fff',
+  },
+  pesquisaResposta: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#fff',
+    marginTop: 5, // Espaço entre o nome e a resposta
+  },
+  images1Icon: {
+    width: 140,
+    height: 40,
+    marginBottom: 20, // Margem inferior para afastar da parte inferior
   },
 });
 
