@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Inatel from "./assets/inatel.png";
 import Lupa from "./assets/lupa.png";
-import PageAdminRespostas from './pages/pageAdminRespostas';
-import PageCreateUser from './pages/pageCreateUser'; // Importar a tela de criação de usuário
+import PageAdminPerguntas from './pages/pageAdminPerguntas';
+import PageCreatePergunta from './pages/pageCreatePergunta'; // Corrigido para importar PageCreatePergunta
+import PageCreateUser from './pages/pageCreateUser';
+import PagePesquisaUser from './pages/pagePesquisaUser'; // Corrigido para importar PagePesquisaUser
 
 const Stack = createStackNavigator();
 
@@ -33,9 +35,16 @@ const HomeScreen = ({ navigation }) => {
       if (response.status == 200) {
         const jsonResponse = await response.json();  // Se a resposta for JSON
         const employeeName = jsonResponse.employee_name;
+        const employeeType = jsonResponse.employee_type;
 
         setMensagem(`Login realizado com sucesso!, Bem-vindo, ${employeeName}`);
         console.log(jsonResponse);  // Apenas para verificar a resposta
+
+        // Navegar para a página PagePesquisaUser após login bem-sucedido
+        if (employeeType === 'admin') navigation.navigate('PageAdminPerguntas');
+
+        else if (employeeType === 'user') navigation.navigate('PagePesquisaUser');
+
       } else if (response.status == 404) {
         const errorResponse = await response.json();
         alert('O email ou senha estão incorretos');
@@ -92,9 +101,12 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
+        {/* Certifique-se de que os filhos do Stack.Navigator sejam somente Stack.Screen */}
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CreateUser" component={PageCreateUser} options={{ title: 'Criar Usuário' }} />
-        <Stack.Screen name="PageAdminRespostas" component={PageAdminRespostas} options={{ title: 'Page Admin Respostas' }} />
+        <Stack.Screen name="PageAdminPerguntas" component={PageAdminPerguntas} options={{ title: 'Page Admin Perguntas' }} />
+        <Stack.Screen name="PagePesquisaUser" component={PagePesquisaUser} options={{ title: 'Pesquisa de Usuário' }} />
+        <Stack.Screen name="PageCreatePergunta" component={PageCreatePergunta} options={{ title: 'Criar Pesquisa' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

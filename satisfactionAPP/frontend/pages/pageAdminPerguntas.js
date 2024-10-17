@@ -10,28 +10,28 @@ const PageAdminPerguntas = ({ navigation }) => {
       <View style={styles.optionsContainer}>
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('AdicionarPesquisa')} // Navegação para adicionar pesquisa
+          onPress={() => navigation.navigate('PageCreatePergunta')} // Navegação correta para criar pesquisa
         >
           <Text style={styles.buttonText}>Adicionar uma pesquisa</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('EditarPesquisa')} // Navegação para editar pesquisa
+          onPress={() => navigation.navigate('EditarPesquisa')} // Se a tela de editar pesquisa já existir
         >
           <Text style={styles.buttonText}>Editar uma pesquisa</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('ExcluirPesquisa')} // Navegação para excluir pesquisa
+          onPress={() => navigation.navigate('ExcluirPesquisa')} // Se a tela de excluir pesquisa já existir
         >
           <Text style={styles.buttonText}>Excluir uma pesquisa</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('VisualizarPesquisas')} // Navegação para visualizar pesquisas
+          onPress={() => navigation.navigate('VisualizarPesquisas')} // Se a tela de visualização de pesquisas já existir
         >
           <Text style={styles.buttonText}>Visualizar pesquisas</Text>
         </TouchableOpacity>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#b72805',
     alignItems: 'center',
-    justifyContent: 'flex-start', // O conteúdo começa no topo
+    justifyContent: 'flex-start',
     paddingTop: 20,
   },
   satisfactionapp: {
@@ -58,15 +58,15 @@ const styles = StyleSheet.create({
   },
   optionsContainer: {
     flex: 1,
-    justifyContent: 'center', // Centraliza as opções verticalmente
-    width: '100%', // Largura total para o container das opções
-    alignItems: 'center', // Alinhamento horizontal
+    justifyContent: 'center',
+    width: '100%',
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#3d3838',
     borderRadius: 10,
     padding: 15,
-    width: '80%', // Largura do botão
+    width: '80%',
     alignItems: 'center',
     marginVertical: 10,
   },
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   images1Icon: {
     width: 140,
     height: 40,
-    marginBottom: 20, // Margem inferior para afastar da parte inferior
+    marginBottom: 20,
   },
 });
 
