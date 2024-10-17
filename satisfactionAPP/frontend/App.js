@@ -11,26 +11,39 @@ const Stack = createStackNavigator();
 
 const HomeScreen = ({ navigation }) => {
   const { width, height } = Dimensions.get('window');
-  const [usuario, setUsuario] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setSenha] = useState('');
   const [mensagem, setMensagem] = useState('');
 
-  const handleEntrar = () => {
-    if (!usuario || !senha) {
-      setMensagem('Preencha os campos de usuário e senha.');
+  const handleEntrar = async () => {
+    if (!email || !password) {
+      setMensagem('Preencha os campos de email e senha.');
       return;
     }
 
-    // Exemplo de validação simples para email (pode ser melhorado)
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(usuario)) {
-      setMensagem('Por favor, insira um e-mail válido.');
-      return;
-    }
+    try {
+      const response = await fetch(`http://10.0.2.2:3333/employee?email=${email}&password=${password}`, {
+        method: 'GET',  // Método da requisição
+        headers: {
+          'Content-Type': 'application/json',  // Define o tipo de conteúdo como JSON
+        },
+      });
 
-    // Se tudo estiver correto
-    setMensagem('Login realizado com sucesso!');
-    Alert.alert('Login realizado', `Usuário: ${usuario}`);
+      // Verificando a resposta
+      if (response.status == 200) {
+        const jsonResponse = await response.json();  // Se a resposta for JSON
+        const employeeName = jsonResponse.employee_name;
+
+        setMensagem(`Login realizado com sucesso!, Bem-vindo, ${employeeName}`);
+        console.log(jsonResponse);  // Apenas para verificar a resposta
+      } else if (response.status == 404) {
+        const errorResponse = await response.json();
+        alert('O email ou senha estão incorretos');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar à API:', error);
+      alert('Erro ao conectar à API');
+    }
   };
 
   return (
@@ -43,17 +56,17 @@ const HomeScreen = ({ navigation }) => {
         
         <TextInput
           style={styles.input}
-          placeholder="Usuário"
+          placeholder="Email"
           placeholderTextColor="#999"
-          value={usuario}
-          onChangeText={setUsuario}
+          value={email}
+          onChangeText={setEmail}
         />
         <TextInput
           style={styles.input}
           placeholder="Senha"
           placeholderTextColor="#999"
           secureTextEntry={true}
-          value={senha}
+          value={password}
           onChangeText={setSenha}
         />
         

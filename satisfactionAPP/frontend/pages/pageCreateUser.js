@@ -9,11 +9,18 @@ const PageCreateUser = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
+  const [mensagem, setMensagem] = useState('');
 
-  const handleCadastrar = () => {
+  const handleCadastrar = async() => {
     // Lógica para cadastro de usuário
     if (!usuario || !email || !senha || !confirmarSenha) {
       alert('Preencha todos os campos.');
+      return;
+    }
+
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(email)) {
+      setMensagem('Por favor, insira um e-mail válido.');
       return;
     }
 
@@ -22,8 +29,42 @@ const PageCreateUser = () => {
       return;
     }
 
-    alert('Usuário cadastrado com sucesso!');
-    // Lógica para cadastro, por exemplo, chamar API
+    // Criação do objeto de dados para envio
+    const userData = {
+      name: usuario,
+      type: "admin",
+      email: email,
+      password: senha
+    };
+
+    try {
+      // Fazendo a requisição POST usando fetch
+      const response = await fetch('http://10.0.2.2:3333/employee', {
+        method: 'POST',  // Método da requisição
+        headers: {
+          'Content-Type': 'application/json',  // Define o tipo de conteúdo como JSON
+        },
+        body: JSON.stringify({
+          name: userData.name,
+          type: userData.type,
+          email: userData.email,
+          password: userData.password
+        }),  // Enviando o corpo da requisição como JSON
+      });
+
+      // Verificando a resposta
+      if (response.ok) {
+        const jsonResponse = await response.json();  // Se a resposta for JSON
+        alert('Usuário cadastrado com sucesso!');
+        console.log(jsonResponse);  // Apenas para verificar a resposta
+      } else {
+        const errorResponse = await response.json();
+        alert('Erro ao cadastrar usuário: ' + errorResponse.message);
+      }
+    } catch (error) {
+      console.error('Erro ao conectar à API:', error);
+      alert('Erro ao conectar à API');
+    }
   };
 
   return (
@@ -50,7 +91,7 @@ const PageCreateUser = () => {
           value={email}
           onChangeText={setEmail}
         />
-
+        {mensagem ? <Text style={styles.mensagem}>{mensagem}</Text> : null}
         <TextInput
           style={styles.input}
           placeholder="Senha"
@@ -136,6 +177,11 @@ const styles = StyleSheet.create({
     width: 150,
     height: 50,
     marginTop: 50,
+  },
+  mensagem: {
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 10,
   },
 });
 
