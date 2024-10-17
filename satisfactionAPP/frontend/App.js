@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState } from 'react';
-import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Inatel from "./assets/inatel.png";
 import Lupa from "./assets/lupa.png";
 import PageAdminRespostas from './pages/pageAdminRespostas';
@@ -80,10 +80,6 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>CADASTRAR-SE</Text>
         </TouchableOpacity>
 
-        {/* Botão para navegar para a página de pesquisa */}
-        <TouchableOpacity style={styles.buttonTest} onPress={() => navigation.navigate('PageAdminRespostas')}>
-          <Text style={styles.buttonText}>TESTE</Text>
-        </TouchableOpacity>
       </View>
 
       <Image style={styles.images1Icon} resizeMode="contain" source={Inatel} />
@@ -148,14 +144,6 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     backgroundColor: '#b72805',  // Cor alterada para vermelho
-    borderRadius: 5,
-    padding: 10,
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  buttonTest: {
-    width: '90%',
-    backgroundColor: '#007BFF',  // Cor azul para diferenciar o botão de teste
     borderRadius: 5,
     padding: 10,
     alignItems: 'center',
