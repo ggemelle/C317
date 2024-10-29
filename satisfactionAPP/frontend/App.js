@@ -54,7 +54,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.androidLarge1}>
       <Image style={styles.magnifyingGlassElementBackIcon} resizeMode="contain" source={Lupa} />
-      <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
+      <Text style={styles.satisfactionapp}>CAPTALIS</Text>
 
       <View style={styles.formContainer}>
         <Text style={styles.bemVindo}>Bem-vindo</Text>
@@ -108,7 +108,7 @@ const App = () => {
 
 const styles = StyleSheet.create({
   androidLarge1: {
-    backgroundColor: '#b72805',
+    backgroundColor: '#D8DAD6',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '90%',
-    backgroundColor: '#b72805',
+    backgroundColor: '#004aad',
     borderRadius: 5,
     padding: 10,
     alignItems: 'center',

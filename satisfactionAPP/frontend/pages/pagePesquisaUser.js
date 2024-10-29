@@ -59,7 +59,7 @@ const PagePesquisaUser = () => {
 
 const styles = StyleSheet.create({
   androidLarge1: {
-    backgroundColor: '#b72805',
+    backgroundColor: '#D8DAD6',
     flex: 1,
     width: '100%',
     height: '100%',

@@ -122,7 +122,7 @@ const PageCreateUser = () => {
 
 const styles = StyleSheet.create({
   androidLarge1: {
-    backgroundColor: '#b72805',
+    backgroundColor: '#D8DAD6',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

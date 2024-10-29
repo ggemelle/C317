@@ -39,7 +39,7 @@ const PageAdminRespostas = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b72805',
+    backgroundColor: '#D8DAD6',
     alignItems: 'center', // Centraliza o conteúdo horizontalmente
     paddingTop: 20, // Margem superior
   },

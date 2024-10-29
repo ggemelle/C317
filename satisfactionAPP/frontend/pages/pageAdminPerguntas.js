@@ -45,7 +45,7 @@ const PageAdminPerguntas = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b72805',
+    backgroundColor: '#D8DAD6',
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 20,

@@ -99,7 +99,7 @@ const PageRespondeUser = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b72805',  // Mesma cor de fundo usada na tela principal
+    backgroundColor: '#D8DAD6',  // Mesma cor de fundo usada na tela principal
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
