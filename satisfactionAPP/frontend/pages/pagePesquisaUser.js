@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native'; // Importando hook de 
 import React, { useState } from 'react';
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Inatel from "../assets/inatel.png";
+import Lupa from "../assets/lupa.png";
 
 const PagePesquisaUser = () => {
   const { width } = Dimensions.get('window');
@@ -33,8 +34,9 @@ const PagePesquisaUser = () => {
 
   return (
     <View style={styles.androidLarge1}>
+      <Image style={styles.magnifyingGlassElementBackIcon} resizeMode="contain" source={Lupa} />
       <Text style={[styles.satisfactionapp]}>
-        SatisfactionAPP
+        CAPTALIS
       </Text>
 
       <Text style={[styles.pesquisasDisponiveis]}>
@@ -80,11 +82,16 @@ const styles = StyleSheet.create({
   pesquisaItem: {
     height: 65,
     width: 300,
-    backgroundColor: '#3d3838',
+    backgroundColor: '#004aad',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     marginBottom: 20,
+  },
+  magnifyingGlassElementBackIcon: {
+    width: 100,
+    height: 100,
+    marginTop: 50,
   },
   pesquisaText: {
     fontSize: 25,

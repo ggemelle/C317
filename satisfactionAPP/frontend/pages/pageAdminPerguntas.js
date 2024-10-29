@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Inatel from "../assets/inatel.png";
+import Lupa from "../assets/lupa.png";
 
 const PageAdminPerguntas = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
+      <Image style={styles.magnifyingGlassElementBackIcon} resizeMode="contain" source={Lupa} />
+      <Text style={styles.satisfactionapp}>CAPTALIS</Text>
 
       <View style={styles.optionsContainer}>
         <TouchableOpacity 
@@ -17,21 +19,21 @@ const PageAdminPerguntas = ({ navigation }) => {
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('EditarPesquisa')} // Se a tela de editar pesquisa já existir
+          onPress={() => navigation.navigate('PagePesquisaUser')}
         >
           <Text style={styles.buttonText}>Editar uma pesquisa</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('ExcluirPesquisa')} // Se a tela de excluir pesquisa já existir
+          onPress={() => navigation.navigate('PagePesquisaUser')} // Navegação para a tela PagePesquisaUser ao excluir pesquisa
         >
           <Text style={styles.buttonText}>Excluir uma pesquisa</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('VisualizarPesquisas')} // Se a tela de visualização de pesquisas já existir
+          onPress={() => navigation.navigate('PagePesquisaUser')} // Navegação para a tela PagePesquisaUser ao visualizar pesquisas
         >
           <Text style={styles.buttonText}>Visualizar pesquisas</Text>
         </TouchableOpacity>
@@ -56,6 +58,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: '#fff',
   },
+  magnifyingGlassElementBackIcon: {
+    width: 100,
+    height: 100,
+    marginTop: 50,
+  },
   optionsContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -63,7 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#3d3838',
+    backgroundColor: '#004aad',
     borderRadius: 10,
     padding: 15,
     width: '80%',

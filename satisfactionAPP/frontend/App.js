@@ -8,6 +8,7 @@ import Lupa from "./assets/lupa.png";
 import PageAdminPerguntas from './pages/pageAdminPerguntas';
 import PageCreatePergunta from './pages/pageCreatePergunta';
 import PageCreateUser from './pages/pageCreateUser';
+import PageEditPesquisa from './pages/PageEditPesquisa';
 import PagePesquisaUser from './pages/pagePesquisaUser';
 import PageRespondeUser from './pages/pageRespondeUser'; // Importe a nova tela
 
@@ -101,6 +102,7 @@ const App = () => {
         <Stack.Screen name="PagePesquisaUser" component={PagePesquisaUser} options={{ title: 'Pesquisa de Usuário' }} />
         <Stack.Screen name="PageCreatePergunta" component={PageCreatePergunta} options={{ title: 'Criar Pesquisa' }} />
         <Stack.Screen name="pageRespondeUser" component={PageRespondeUser} options={{ title: 'Responda à Pesquisa' }} />
+        <Stack.Screen name="PageEditPesquisa" component={PageEditPesquisa} options={{ title: 'Edite à Pesquisa' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

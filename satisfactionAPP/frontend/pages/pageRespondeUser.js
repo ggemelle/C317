@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Lupa from "../assets/lupa.png";
 
 const PageRespondeUser = () => {
   const { width, height } = Dimensions.get('window');
   const [selectedValues, setSelectedValues] = useState({
-    pergunta1: 0,
-    pergunta2: 0,
-    pergunta3: 0,
-    pergunta4: 0,
+    pergunta1: '',
+    pergunta2: '',
+    pergunta3: '',
+    pergunta4: '',
   });
 
   const handleSelectValue = (pergunta, value) => {
@@ -17,81 +18,32 @@ const PageRespondeUser = () => {
     });
   };
 
+  const options = ['Muito bom', 'Bom', 'Regular', 'Ruim', 'Muito ruim'];
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>SatisfactionAPP</Text>
+      <Image style={styles.magnifyingGlassElementBackIcon} resizeMode="contain" source={Lupa} />
+      <Text style={styles.title}>CAPTALIS</Text>
 
       <View style={styles.questionContainer}>
         <Text style={styles.questionText}>PERGUNTA 1 (Peso 20) :</Text>
         <View style={styles.optionsContainer}>
-          {[1, 2, 3, 4, 5].map(value => (
+          {options.map((label, index) => (
             <TouchableOpacity
-              key={value}
+              key={label}
               style={[
                 styles.optionButton,
-                selectedValues.pergunta1 === value && styles.optionButtonSelected,
+                selectedValues.pergunta1 === label && styles.optionButtonSelected,
               ]}
-              onPress={() => handleSelectValue('pergunta1', value)}
+              onPress={() => handleSelectValue('pergunta1', label)}
             >
-              <Text style={styles.optionButtonText}>{value}</Text>
+              <Text style={styles.optionButtonText}>{label}</Text>
             </TouchableOpacity>
           ))}
         </View>
       </View>
 
-      <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>PERGUNTA 2 (Peso 10) :</Text>
-        <View style={styles.optionsContainer}>
-          {[1, 2, 3, 4, 5].map(value => (
-            <TouchableOpacity
-              key={value}
-              style={[
-                styles.optionButton,
-                selectedValues.pergunta2 === value && styles.optionButtonSelected,
-              ]}
-              onPress={() => handleSelectValue('pergunta2', value)}
-            >
-              <Text style={styles.optionButtonText}>{value}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
-
-      <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>PERGUNTA 3 (Peso 20) :</Text>
-        <View style={styles.optionsContainer}>
-          {[1, 2, 3, 4, 5].map(value => (
-            <TouchableOpacity
-              key={value}
-              style={[
-                styles.optionButton,
-                selectedValues.pergunta3 === value && styles.optionButtonSelected,
-              ]}
-              onPress={() => handleSelectValue('pergunta3', value)}
-            >
-              <Text style={styles.optionButtonText}>{value}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
-
-      <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>PERGUNTA 4 (Peso 50) :</Text>
-        <View style={styles.optionsContainer}>
-          {[1, 2, 3, 4, 5].map(value => (
-            <TouchableOpacity
-              key={value}
-              style={[
-                styles.optionButton,
-                selectedValues.pergunta4 === value && styles.optionButtonSelected,
-              ]}
-              onPress={() => handleSelectValue('pergunta4', value)}
-            >
-              <Text style={styles.optionButtonText}>{value}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
+      {/* Repita o bloco acima para PERGUNTA 2, PERGUNTA 3 e PERGUNTA 4 */}
     </View>
   );
 };
@@ -99,7 +51,7 @@ const PageRespondeUser = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D8DAD6',  // Mesma cor de fundo usada na tela principal
+    backgroundColor: '#D8DAD6',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -108,7 +60,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: '#fff',
     marginBottom: 30,
-    fontFamily: 'Cursive', // Troque para uma fonte similar, se necessário
+    fontFamily: 'Cursive',
   },
   questionContainer: {
     marginBottom: 20,
@@ -126,17 +78,24 @@ const styles = StyleSheet.create({
   optionButton: {
     backgroundColor: '#fff',
     borderRadius: 25,
-    width: 50,
+    width: 80, // Ajuste para caber o texto
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+  magnifyingGlassElementBackIcon: {
+    width: 100,
+    height: 100,
+    marginTop: 50,
   },
   optionButtonSelected: {
-    backgroundColor: '#3d3838',
+    backgroundColor: '#004aad',
   },
   optionButtonText: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#333',
+    textAlign: 'center',
   },
 });
 

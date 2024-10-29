@@ -6,122 +6,71 @@ const PageCreatePergunta = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [question, setQuestion] = useState('');
   const [questions, setQuestions] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const [responseValues, setResponseValues] = useState([1, 2, 3, 4, 5]); // Respostas pré-definidas
+  const [responseValues] = useState([1, 2, 3, 4, 5]); // Respostas pré-definidas
 
-  // Função para adicionar ou editar uma pergunta
-  const handleAddOrEditQuestion = () => {
-    if (question.trim()) {
-      if (isEditing !== false) {
-        const updatedQuestions = [...questions];
-        updatedQuestions[editIndex] = { question, responses: responseValues.map((_, index) => ({ value: responseValues[index], text: `Resposta ${index + 1}` })) };
-        setQuestions(updatedQuestions);
-        setIsEditing(false);
-      } else {
-        setQuestions([...questions, { question, responses: responseValues.map((_, index) => ({ value: responseValues[index], text: `Resposta ${index + 1}` })) }]);
-      }
-      setQuestion('');
-    }
+  // Função para calcular ENPS
+  const calculateENPS = () => {
+    const totalVotes = questions.length;
+    const promoters = questions.filter(q => q.score > 90).length;
+    const detractors = questions.filter(q => q.score <= 60).length;
+    return ((promoters - detractors) / totalVotes) * 100;
   };
 
-  // Função para iniciar a edição de uma pergunta
-  const handleEditQuestion = (index) => {
-    setIsEditing(true);
-    setEditIndex(index);
-    setQuestion(questions[index].question);
-    // Presumindo que as respostas padrão sejam [1, 2, 3, 4, 5]
+  // Função para adicionar uma pergunta com submétricas e nota fixa de 100
+  const addQuestion = () => {
+    const fixedScore = 100;
+
+    const newQuestion = {
+      question,
+      score: fixedScore,
+      submetrics: [100, 80, 60, 40, 20].map((impact) => ({
+        impact,
+        adjustedValue: (fixedScore * impact) / 100,
+      }))
+    };
+
+    setQuestions([...questions, newQuestion]);
+    setQuestion(''); // Limpa o campo da pergunta
   };
 
-  // Função para salvar a pesquisa
-  const handleSaveSurvey = async () => {
+  // Função para salvar a pesquisa e calcular o ENPS
+  const handleSaveSurvey = () => {
     if (!title.trim()) {
       alert('Por favor, insira um título para a pesquisa');
       return;
     }
-
-    if (questions.length === 0) {
-      alert('Por favor, adicione pelo menos uma pergunta');
-      return;
-    }
-
-    // Enviar as perguntas e o título da pesquisa para o backend
-    try {
-      const response = await fetch('http://10.0.2.2:3333/surveys', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          questions,
-        }),
-      });
-
-      if (response.status === 201) {
-        alert('Pesquisa criada com sucesso!');
-        navigation.goBack();
-      } else {
-        alert('Erro ao criar a pesquisa');
-      }
-    } catch (error) {
-      console.error('Erro ao conectar com a API:', error);
-      alert('Erro ao conectar com a API');
-    }
+    const enps = calculateENPS();
+    // alert(`Pesquisa salva com ENPS: ${enps}`);
+    navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Criar Pesquisa</Text>
-
+      
       {/* Campo para o título da pesquisa */}
-      <TextInput
-        style={styles.input}
-        placeholder="Título da Pesquisa"
-        value={title}
-        onChangeText={setTitle}
-      />
-
+      <TextInput style={styles.input} placeholder="Título da Pesquisa" value={title} onChangeText={setTitle} />
+      
       {/* Campo para adicionar perguntas */}
-      <TextInput
-        style={styles.input}
-        placeholder="Digite sua pergunta"
-        value={question}
-        onChangeText={setQuestion}
-      />
-
-      <TouchableOpacity style={styles.button} onPress={handleAddOrEditQuestion}>
-        <Text style={styles.buttonText}>{isEditing ? 'Editar Pergunta' : 'Adicionar Pergunta'}</Text>
+      <TextInput style={styles.input} placeholder="Digite sua pergunta" value={question} onChangeText={setQuestion} />
+      
+      <TouchableOpacity style={styles.button} onPress={addQuestion}>
+        <Text style={styles.buttonText}>Adicionar Pergunta</Text>
       </TouchableOpacity>
 
-      {/* Lista de perguntas adicionadas */}
+      {/* Lista de perguntas e suas submétricas */}
       <FlatList
         data={questions}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <View style={styles.questionContainer}>
-            <TouchableOpacity onPress={() => handleEditQuestion(index)}>
-              <Text style={styles.questionItem}>{item.question}</Text>
-            </TouchableOpacity>
-            <View style={styles.responseContainer}>
-              {item.responses.map((response, respIndex) => (
-                <View key={respIndex} style={styles.responseItem}>
-                  <TextInput
-                    style={styles.responseInput}
-                    value={response.text}
-                    onChangeText={(text) => {
-                      const updatedResponses = [...questions];
-                      updatedResponses[index].responses[respIndex].text = text;
-                      setQuestions(updatedResponses);
-                    }}
-                  />
-                  <Text style={styles.responseValue}>{response.value}</Text>
-                </View>
-              ))}
-            </View>
+            <Text style={styles.questionItem}>{item.question}</Text>
+            <Text>Submétricas:</Text>
+            {item.submetrics.map((sub, index) => (
+              <Text key={index}>Submétrica {index + 1}: {sub.adjustedValue.toFixed(2)}%</Text>
+            ))}
           </View>
         )}
-        ListEmptyComponent={<Text style={styles.emptyList}>Nenhuma pergunta adicionada</Text>}
       />
 
       {/* Botão para salvar a pesquisa */}
@@ -157,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff', 
   },
   button: {
-    backgroundColor: '#3d3838',
+    backgroundColor: '#004aad',
     padding: 10,
     borderRadius: 5,
     marginBottom: 20,
@@ -168,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   saveButton: {
-    backgroundColor: '#3d3838',
+    backgroundColor: '#004aad',
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
@@ -183,30 +132,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 5,
     color: '#000', 
-  },
-  responseContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  responseItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  responseInput: {
-    borderColor: '#000',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 5,
-    width: 80,
-    marginRight: 10,
-  },
-  responseValue: {
-    fontSize: 16,
-    color: '#000',
-  },
-  emptyList: {
-    textAlign: 'center',
-    color: '#fff', 
   },
   images1Icon: {
     width: 140,

@@ -70,7 +70,7 @@ const PageCreateUser = () => {
   return (
     <View style={styles.androidLarge1}>
       <Image style={styles.magnifyingGlassElementBackIcon} resizeMode="contain" source={Lupa} />
-      <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
+      <Text style={styles.satisfactionapp}>CAPTALIS</Text>
 
       <View style={styles.formContainer}>
         <Text style={styles.bemVindo}>Crie sua conta</Text>
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '90%',
-    backgroundColor: '#b72805',  // Cor do botão em vermelho
+    backgroundColor: '#004aad',  // Cor do botão em vermelho
     borderRadius: 5,
     padding: 10,
     alignItems: 'center',

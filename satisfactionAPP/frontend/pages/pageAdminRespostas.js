@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     flexGrow: 1, // Faz com que a lista ocupe o espaço disponível
   },
   pesquisaContainer: {
-    backgroundColor: '#3d3838',
+    backgroundColor: '#004aad',
     borderRadius: 10,
     padding: 15,
     marginVertical: 10,
