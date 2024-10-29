@@ -1,11 +1,15 @@
+// App.js
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState } from 'react';
-import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Inatel from "./assets/inatel.png";
 import Lupa from "./assets/lupa.png";
-import PageAdminRespostas from './pages/pageAdminRespostas';
-import PageCreateUser from './pages/pageCreateUser'; // Importar a tela de criação de usuário
+import PageAdminPerguntas from './pages/pageAdminPerguntas';
+import PageCreatePergunta from './pages/pageCreatePergunta';
+import PageCreateUser from './pages/pageCreateUser';
+import PagePesquisaUser from './pages/pagePesquisaUser';
+import PageRespondeUser from './pages/pageRespondeUser'; // Importe a nova tela
 
 const Stack = createStackNavigator();
 
@@ -23,21 +27,22 @@ const HomeScreen = ({ navigation }) => {
 
     try {
       const response = await fetch(`http://10.0.2.2:3333/employee?email=${email}&password=${password}`, {
-        method: 'GET',  // Método da requisição
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',  // Define o tipo de conteúdo como JSON
+          'Content-Type': 'application/json',
         },
       });
 
-      // Verificando a resposta
       if (response.status == 200) {
-        const jsonResponse = await response.json();  // Se a resposta for JSON
+        const jsonResponse = await response.json();
         const employeeName = jsonResponse.employee_name;
+        const employeeType = jsonResponse.employee_type;
 
         setMensagem(`Login realizado com sucesso!, Bem-vindo, ${employeeName}`);
-        console.log(jsonResponse);  // Apenas para verificar a resposta
+
+        if (employeeType === 'admin') navigation.navigate('PageAdminPerguntas');
+        else if (employeeType === 'user') navigation.navigate('PagePesquisaUser');
       } else if (response.status == 404) {
-        const errorResponse = await response.json();
         alert('O email ou senha estão incorretos');
       }
     } catch (error) {
@@ -79,11 +84,6 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateUser')}>
           <Text style={styles.buttonText}>CADASTRAR-SE</Text>
         </TouchableOpacity>
-
-        {/* Botão para navegar para a página de pesquisa */}
-        <TouchableOpacity style={styles.buttonTest} onPress={() => navigation.navigate('PageAdminRespostas')}>
-          <Text style={styles.buttonText}>TESTE</Text>
-        </TouchableOpacity>
       </View>
 
       <Image style={styles.images1Icon} resizeMode="contain" source={Inatel} />
@@ -91,14 +91,16 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-// Função principal App que define a navegação entre as telas
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CreateUser" component={PageCreateUser} options={{ title: 'Criar Usuário' }} />
-        <Stack.Screen name="PageAdminRespostas" component={PageAdminRespostas} options={{ title: 'Page Admin Respostas' }} />
+        <Stack.Screen name="PageAdminPerguntas" component={PageAdminPerguntas} options={{ title: 'Page Admin Perguntas' }} />
+        <Stack.Screen name="PagePesquisaUser" component={PagePesquisaUser} options={{ title: 'Pesquisa de Usuário' }} />
+        <Stack.Screen name="PageCreatePergunta" component={PageCreatePergunta} options={{ title: 'Criar Pesquisa' }} />
+        <Stack.Screen name="pageRespondeUser" component={PageRespondeUser} options={{ title: 'Responda à Pesquisa' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
   },
   satisfactionapp: {
     fontSize: 40,
-    fontFamily: 'Cursive', // Troque para uma fonte similar
+    fontFamily: 'Cursive',
     color: '#fff',
     marginVertical: 20,
   },
@@ -147,15 +149,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '90%',
-    backgroundColor: '#b72805',  // Cor alterada para vermelho
-    borderRadius: 5,
-    padding: 10,
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  buttonTest: {
-    width: '90%',
-    backgroundColor: '#007BFF',  // Cor azul para diferenciar o botão de teste
+    backgroundColor: '#b72805',
     borderRadius: 5,
     padding: 10,
     alignItems: 'center',

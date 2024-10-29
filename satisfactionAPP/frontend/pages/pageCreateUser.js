@@ -32,7 +32,7 @@ const PageCreateUser = () => {
     // Criação do objeto de dados para envio
     const userData = {
       name: usuario,
-      type: "admin",
+      type: "user",
       email: email,
       password: senha
     };
