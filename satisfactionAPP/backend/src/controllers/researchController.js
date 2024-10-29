@@ -1,12 +1,22 @@
 const researchModel = require('../models/researchModel')
 
-const getResearches = async (req, res) => {
-    
-    const [researches] = await researchModel.getResearches(req.body);
+const addResearch = async (req, res) => {
+    const addedResearch = await researchModel.addResearch(req.body);
+    return res.status(201).json(addedResearch);
+};
 
-    return res.status(200).json(researches);
+const getResearchesByEmployee = async (req, res) => {
+    const {employee_id} = req.query;
+    const caughtResearchByEmployee = await researchModel.getResearchesByEmployee({employee_id});
+
+    if (caughtResearchByEmployee[0].length === 0) {
+        return res.status(404).json({ message: 'Nenhuma pesquisa encontrada' });
+      }
+    return res.status(200).json(caughtResearchByEmployee[0]);
+    
 };
 
 module.exports = {
-    getResearches
+    getResearchesByEmployee,
+    addResearch
 };

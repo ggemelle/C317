@@ -6,7 +6,9 @@ const employeeMiddleware = require('./middlewares/employeeMiddleware');
 
 const router = express.Router();
 
-router.get('/researches', researchMiddleware.validateBody, researchController.getResearches);
+router.get('/researches', researchMiddleware.validateBodyGetResearchByEmployee, researchController.getResearchesByEmployee);
+router.post('/researches', researchMiddleware.validateBodyCreateResearch, researchController.addResearch);
+
 router.post('/employee', employeeMiddleware.validateBodyCreateEmployeer ,employeeController.addEmployee);
 router.get('/employee', employeeMiddleware.validateBodyGetEmployee, employeeController.getEmployee);
 
