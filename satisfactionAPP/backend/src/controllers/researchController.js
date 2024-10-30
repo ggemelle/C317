@@ -16,7 +16,7 @@ const getResearchesByEmployee = async (req, res) => {
     
 };
 
-module.exports = {
+module.exports = {    
     getResearchesByEmployee,
     addResearch
 };

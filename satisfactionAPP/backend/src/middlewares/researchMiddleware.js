@@ -23,7 +23,7 @@ const validateBodyCreateResearch = (req, res, next) => {
     next();
 };
 
-const validateBodyGetResearchByEmployee = (req, res, next) => {
+const validateParameterGetResearchByEmployee = (req, res, next) => {
     const {employee_id} = req.query;
 
     if(employee_id == undefined) {
@@ -37,6 +37,6 @@ const validateBodyGetResearchByEmployee = (req, res, next) => {
 };
 
 module.exports = {
-    validateBodyGetResearchByEmployee,
+    validateParameterGetResearchByEmployee,
     validateBodyCreateResearch
 };
