@@ -20,11 +20,11 @@ const updateQuestion = async(question) => {
 const getQuestionsByResearch = async (idResearch) => {
     const {research_id} = idResearch;
 
-    const caughtQuestionsByQuestion = await connection.execute(`SELECT q.* FROM question q 
-        JOIN research r ON q.question_id = r.question_id
+    const caughtQuestionsByResearch = await connection.execute(`SELECT q.* FROM question q 
+        JOIN research r ON q.research_id = r.research_id
         WHERE r.research_id = ${research_id};`);
 
-    return caughtQuestionsByQuestion;
+    return caughtQuestionsByResearch;
 };
 
 const deleteQuestionById = async (idQuestion) => {

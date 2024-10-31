@@ -1,6 +1,6 @@
 const answerModel = require('../models/answerModel')
 
-const addanswer = async (req, res) => {
+const addAnswer = async (req, res) => {
     const addedAnswer = await answerModel.addAnswer(req.body);
     return res.status(201).json(addedAnswer);
 };
@@ -17,5 +17,5 @@ const getAnswersByQuestion = async(req, res) => {
 
 module.exports = {    
     getAnswersByQuestion,
-    addanswer
+    addAnswer
 };

@@ -20,8 +20,15 @@ const getQuestionsByResearch = async(req, res) => {
     return res.status(200).json(caughtQuestionByResearch[0]);
 };
 
+const deleteQuestion = async(req, res) => {
+    const {question_id} = req.query;
+    const deletedQuestion = await questionModel.deleteQuestionById({question_id});
+    return res.status(200).json(deletedQuestion);
+};
+
 module.exports = {    
     getQuestionsByResearch,
     updateQuestion,
-    addQuestion
+    addQuestion,
+    deleteQuestion
 };
