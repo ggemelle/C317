@@ -1,10 +1,10 @@
 const connection = require('./connection')
 
 const addQuestion = async (question) => {
-    const {description, weight, Question_id, employee_id} = question;
+    const {description, weight, research_id, employee_id} = question;
 
-    const [addedQuestion] = await connection.execute(`INSERT INTO question(question_description, question_weight, Question_id, employee_id)
-        VALUES ('${description}', '${weight}','${Question_id}', '${employee_id}');`);
+    const [addedQuestion] = await connection.execute(`INSERT INTO question(question_description, question_weight, research_id, employee_id)
+        VALUES ('${description}', '${weight}','${research_id}', '${employee_id}');`);
     
         return {insertId: addedQuestion.insertId};
 };

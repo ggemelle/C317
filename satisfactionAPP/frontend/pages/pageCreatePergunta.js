@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Inatel from "../assets/inatel.png";
 
-const PageCreatePergunta = ({ navigation }) => {
+const PageCreatePergunta = ({route, navigation }) => {
+
+  const dataAtual = new Date();
+  const dia = String(dataAtual.getDate()).padStart(2, '0');
+  const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+  const ano = dataAtual.getFullYear();
+  const dataFormatada = `${ano}-${mes}-${dia}`;
+  const { employeeId } = route.params;
   const [title, setTitle] = useState('');
   const [question, setQuestion] = useState('');
   const [questions, setQuestions] = useState([]);
@@ -33,15 +40,65 @@ const PageCreatePergunta = ({ navigation }) => {
     setQuestion(''); // Limpa o campo da pergunta
   };
 
+
+
   // Função para salvar a pesquisa e calcular o ENPS
-  const handleSaveSurvey = () => {
+  const handleSaveSurvey = async () => {
     if (!title.trim()) {
       alert('Por favor, insira um título para a pesquisa');
       return;
     }
+  
     const enps = calculateENPS();
-    // alert(`Pesquisa salva com ENPS: ${enps}`);
-    navigation.goBack();
+  
+    const researchData = {
+      date: dataFormatada,
+      name: title,
+      employee_id: employeeId
+    };
+  
+    try {
+      const response = await fetch(`http://10.0.2.2:3333/researches`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          date: researchData.date,
+          name: researchData.name,
+          employee_id: researchData.employee_id
+        }),
+      });
+  
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        const researchId = jsonResponse.insertId;
+  
+        // Agora, faça a requisição para a rota "/question" para cada pergunta criada
+        for (const questionObj of questions) {
+          await fetch(`http://10.0.2.2:3333/questions`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              description: questionObj.question,
+              weight: "6",
+              research_id: researchId,
+              employee_id: employeeId
+            }),
+          });
+        }
+      // Volte para a tela anterior após salvar todas as perguntas
+      console.log('Pesquisa inserida com sucesso')
+      navigation.goBack();
+      } else if (response.status === 404) {
+        alert('Falha ao criar pesquisa');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar à API:', error);
+      alert('Erro ao conectar à API');
+    }
   };
 
   return (

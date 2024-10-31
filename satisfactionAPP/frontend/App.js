@@ -38,11 +38,14 @@ const HomeScreen = ({ navigation }) => {
         const jsonResponse = await response.json();
         const employeeName = jsonResponse.employee_name;
         const employeeType = jsonResponse.employee_type;
+        const employeeId = jsonResponse.employee_id;
 
         setMensagem(`Login realizado com sucesso!, Bem-vindo, ${employeeName}`);
-
-        if (employeeType === 'admin') navigation.navigate('PageAdminPerguntas');
-        else if (employeeType === 'user') navigation.navigate('PagePesquisaUser');
+        if (employeeType === 'admin') {
+          navigation.navigate('PageAdminPerguntas', { employeeId });
+        } else if (employeeType === 'user') {
+          navigation.navigate('PagePesquisaUser', { employeeId });
+        }
       } else if (response.status == 404) {
         alert('O email ou senha estão incorretos');
       }

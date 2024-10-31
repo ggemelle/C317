@@ -3,7 +3,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Inatel from "../assets/inatel.png";
 import Lupa from "../assets/lupa.png";
 
-const PageAdminPerguntas = ({ navigation }) => {
+const PageAdminPerguntas = ({ route, navigation }) => {
+
+  const { employeeId } = route.params; // Obtendo o userId
+
   return (
     <View style={styles.container}>
       <Image style={styles.magnifyingGlassElementBackIcon} resizeMode="contain" source={Lupa} />
@@ -12,28 +15,28 @@ const PageAdminPerguntas = ({ navigation }) => {
       <View style={styles.optionsContainer}>
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('PageCreatePergunta')} // Navegação correta para criar pesquisa
+          onPress={() => navigation.navigate('PageCreatePergunta', {employeeId})} // Navegação correta para criar pesquisa
         >
           <Text style={styles.buttonText}>Adicionar uma pesquisa</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('PagePesquisaUser')}
+          onPress={() => navigation.navigate('PagePesquisaUser', {employeeId})}
         >
           <Text style={styles.buttonText}>Editar uma pesquisa</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('PagePesquisaUser')} // Navegação para a tela PagePesquisaUser ao excluir pesquisa
+          onPress={() => navigation.navigate('PagePesquisaUser', {employeeId})} // Navegação para a tela PagePesquisaUser ao excluir pesquisa
         >
           <Text style={styles.buttonText}>Excluir uma pesquisa</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('PagePesquisaUser')} // Navegação para a tela PagePesquisaUser ao visualizar pesquisas
+          onPress={() => navigation.navigate('PagePesquisaUser', {employeeId})} // Navegação para a tela PagePesquisaUser ao visualizar pesquisas
         >
           <Text style={styles.buttonText}>Visualizar pesquisas</Text>
         </TouchableOpacity>
