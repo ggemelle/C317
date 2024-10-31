@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Inatel from "../assets/inatel.png";
 
-const PageCreatePergunta = ({route, navigation }) => {
+const PageCreatePergunta = ({ route, navigation }) => {
   const dataAtual = new Date();
   const dia = String(dataAtual.getDate()).padStart(2, '0');
   const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
@@ -13,26 +13,16 @@ const PageCreatePergunta = ({route, navigation }) => {
   const [question, setQuestion] = useState('');
   const [score, setScore] = useState(''); // Novo campo para a nota
   const [questions, setQuestions] = useState([]);
-  const [responseValues] = useState([1, 2, 3, 4, 5]);
+  const submetricValues = [100, 80, 60, 40, 20]; // Valores fixos das submétricas
 
-  // Função para calcular ENPS
-  const calculateENPS = () => {
-    const totalVotes = questions.length;
-    const promoters = questions.filter(q => q.score > 90).length;
-    const detractors = questions.filter(q => q.score <= 60).length;
-    return ((promoters - detractors) / totalVotes) * 100;
-  };
-
-  // Função para adicionar uma pergunta com nota customizada
+  // Função para adicionar uma pergunta
   const addQuestion = () => {
     const newScore = parseInt(score);
+
     const newQuestion = {
       question,
       score: newScore,
-      submetrics: [100, 80, 60, 40, 20].map((impact) => ({
-        impact,
-        adjustedValue: (newScore * impact) / 100,
-      }))
+      submetrics: submetricValues
     };
 
     setQuestions([...questions, newQuestion]);
@@ -40,21 +30,13 @@ const PageCreatePergunta = ({route, navigation }) => {
     setScore(''); // Limpa o campo de nota
   };
 
-  // Função para salvar a pesquisa e calcular o ENPS
+  // Função para salvar a pesquisa
   const handleSaveSurvey = async () => {
     if (!title.trim()) {
       alert('Por favor, insira um título para a pesquisa');
       return;
     }
-  
-    const enps = calculateENPS();
-  
-    const researchData = {
-      date: dataFormatada,
-      name: title,
-      employee_id: employeeId
-    };
-  
+
     try {
       const response = await fetch(`http://10.0.2.2:3333/researches`, {
         method: 'POST',
@@ -62,16 +44,16 @@ const PageCreatePergunta = ({route, navigation }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          date: researchData.date,
-          name: researchData.name,
-          employee_id: researchData.employee_id
+          date: dataFormatada,
+          name: title,
+          employee_id: employeeId
         }),
       });
-  
+
       if (response.ok) {
         const jsonResponse = await response.json();
         const researchId = jsonResponse.insertId;
-  
+
         for (const questionObj of questions) {
           await fetch(`http://10.0.2.2:3333/questions`, {
             method: 'POST',
@@ -105,7 +87,6 @@ const PageCreatePergunta = ({route, navigation }) => {
       
       <TextInput style={styles.input} placeholder="Digite sua pergunta" value={question} onChangeText={setQuestion} />
 
-      {/* Novo campo para o usuário inserir a nota */}
       <TextInput style={styles.input} placeholder="Peso (1 a 10)" value={score} onChangeText={setScore} keyboardType="numeric" />
 
       <TouchableOpacity style={styles.button} onPress={addQuestion}>
@@ -120,7 +101,7 @@ const PageCreatePergunta = ({route, navigation }) => {
             <Text style={styles.questionItem}>{item.question} - Peso: {item.score}</Text>
             <Text>Submétricas:</Text>
             {item.submetrics.map((sub, index) => (
-              <Text key={index}>Submétrica {index + 1}: {sub.adjustedValue.toFixed(2)}%</Text>
+              <Text key={index}>Submétrica {index + 1}: {sub}%</Text>
             ))}
           </View>
         )}
