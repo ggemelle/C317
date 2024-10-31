@@ -1,60 +1,70 @@
-import { useNavigation } from '@react-navigation/native'; // Importando hook de navegação
-import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Inatel from "../assets/inatel.png";
 import Lupa from "../assets/lupa.png";
 
-const PagePesquisaUser = () => {
-  const { width } = Dimensions.get('window');
-  const navigation = useNavigation(); // Hook de navegação
+const PagePesquisaUser = ({ route }) => {
+  const { employeeId } = route.params;
+  const navigation = useNavigation();
 
-  // Lista de pesquisas disponíveis
-  const [pesquisas, setPesquisas] = useState([
-    { id: '1', nome: 'PESQUISA 1', peso: 20 },
-    { id: '2', nome: 'PESQUISA 2', peso: 10 },
-    { id: '3', nome: 'PESQUISA 3', peso: 20 },
-    { id: '4', nome: 'PESQUISA 4', peso: 50 },
-  ]);
+  const [pesquisas, setPesquisas] = useState([]);
+
+  useEffect(() => {
+    const fetchPesquisas = async () => {
+      try {
+        const response = await fetch(`http://10.0.2.2:3333/researches?employee_id=${employeeId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPesquisas(data); // Substitui pesquisas com o retorno da API
+        } else {
+          console.error('Erro ao buscar pesquisas:', response.status);
+        }
+      } catch (error) {
+        console.error('Erro ao conectar à API:', error);
+      }
+    };
+
+    fetchPesquisas();
+  }, [employeeId]);
+
+  const formatarData = (data) => {
+    const dataObj = new Date(data);
+    return `${dataObj.getDate().toString().padStart(2, '0')}/${
+      (dataObj.getMonth() + 1).toString().padStart(2, '0')
+    }/${dataObj.getFullYear()}`;
+  };
 
   const handlePesquisaSelecionada = (id) => {
     console.log(`Pesquisa selecionada: ${id}`);
-    // Navegar para a página "pageRespondeUser" passando o ID da pesquisa como parâmetro
     navigation.navigate('pageRespondeUser', { pesquisaId: id });
   };
 
-  // Função que renderiza cada item da lista de pesquisas
   const renderPesquisaItem = ({ item }) => (
     <TouchableOpacity
       style={styles.pesquisaItem}
-      onPress={() => handlePesquisaSelecionada(item.id)}
+      onPress={() => handlePesquisaSelecionada(item.research_id)}
     >
-      <Text style={styles.pesquisaText}>{item.nome}</Text>
+      <Text style={styles.pesquisaText}>{item.research_name}</Text>
+      <Text style={styles.pesquisaDate}>Data: {formatarData(item.research_date)}</Text>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.androidLarge1}>
       <Image style={styles.magnifyingGlassElementBackIcon} resizeMode="contain" source={Lupa} />
-      <Text style={[styles.satisfactionapp]}>
-        CAPTALIS
-      </Text>
+      <Text style={styles.satisfactionapp}>CAPTALIS</Text>
 
-      <Text style={[styles.pesquisasDisponiveis]}>
-        Pesquisas disponíveis
-      </Text>
+      <Text style={styles.pesquisasDisponiveis}>Pesquisas disponíveis</Text>
 
       <FlatList
         data={pesquisas}
         renderItem={renderPesquisaItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.research_id.toString()}
         contentContainerStyle={styles.pesquisaList}
       />
 
-      <Image
-        style={styles.images1Icon}
-        resizeMode="cover"
-        source={Inatel}
-      />
+      <Image style={styles.images1Icon} resizeMode="cover" source={Inatel} />
     </View>
   );
 };
@@ -65,8 +75,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    alignItems: 'center', // Alinhando ao centro
-    justifyContent: 'flex-start', // Conteúdo começa no topo
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     paddingTop: 20,
   },
   pesquisasDisponiveis: {
@@ -80,13 +90,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   pesquisaItem: {
-    height: 65,
+    height: 80,
     width: 300,
     backgroundColor: '#004aad',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     marginBottom: 20,
+    padding: 10,
   },
   magnifyingGlassElementBackIcon: {
     width: 100,
@@ -94,8 +105,13 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   pesquisaText: {
-    fontSize: 25,
+    fontSize: 20,
     color: '#fff',
+    fontFamily: 'Inter-Regular',
+  },
+  pesquisaDate: {
+    fontSize: 14,
+    color: '#e0e0e0',
     fontFamily: 'Inter-Regular',
   },
   images1Icon: {
