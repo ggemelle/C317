@@ -5,6 +5,11 @@ const addQuestion = async (req, res) => {
     return res.status(201).json(addedQuestion);
 };
 
+const updateQuestion = async (req, res) => {
+    const updatedQuestion = await questionModel.updateQuestion(req.body);
+    return res.status(200).json(updatedQuestion);
+};
+
 const getQuestionsByResearch = async(req, res) => {
     const {research_id} = req.query;
     const caughtQuestionByResearch = await questionModel.getQuestionsByResearch({research_id});
@@ -17,5 +22,6 @@ const getQuestionsByResearch = async(req, res) => {
 
 module.exports = {    
     getQuestionsByResearch,
+    updateQuestion,
     addQuestion
 };

@@ -29,6 +29,25 @@ const validateBodyCreateQuestion = (req, res, next) => {
     next();
 };
 
+const validateBodyUpdateQuestion = (req, res, next) => {
+    const {body} = req;
+
+    if(body.description == undefined) {
+        return res.status(400).json({message: 'The field description is required.'});
+    }
+    if(body.description == '') {
+        return res.status(400).json({message: 'The field description cannot be empty.'});
+    }
+    if(body.weight == undefined) {
+        return res.status(400).json({message: 'The field weight is required.'});
+    }
+    if(body.weight == '') {
+        return res.status(400).json({message: 'The field weight cannot be empty.'});
+    }
+
+    next();
+};
+
 const validateParameterGetQuestionByResearch = (req, res, next) => {
     const {research_id} = req.query;
 
@@ -44,5 +63,6 @@ const validateParameterGetQuestionByResearch = (req, res, next) => {
 
 module.exports = {
     validateBodyCreateQuestion,
+    validateBodyUpdateQuestion,
     validateParameterGetQuestionByResearch
 };

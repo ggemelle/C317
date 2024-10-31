@@ -9,6 +9,14 @@ const addResearch = async (research) => {
     return {insertId: addedResearch.insertId};
 };
 
+const updateResearch = async(research) => {
+    const {date, name, research_id} = research;
+    const [updatedResearch] = await connection.execute(`UPDATE research SET research_date = '${date}', research_name = '${name}'
+        WHERE research_id = '${research_id}';`)
+
+    return updatedResearch;
+};
+
 const getResearchesByEmployee = async (idEmployee) => {
 
     const {employee_id} = idEmployee;
@@ -20,7 +28,19 @@ const getResearchesByEmployee = async (idEmployee) => {
     return getResearchesByEmployee;
 };
 
+const deleteResearchById = async (idResearch) => {
+
+    const {research_id} = idResearch;
+
+    const deleteResearchById = await connection.execute(`DELETE FROM research 
+        WHERE research_id = ${research_id};`);
+        
+    return deleteResearchById;
+};
+
 module.exports = {
     getResearchesByEmployee,
-    addResearch
+    addResearch,
+    updateResearch,
+    deleteResearchById
 };
