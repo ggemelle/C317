@@ -10,6 +10,7 @@ import PageCreatePergunta from './pages/pageCreatePergunta';
 import PageCreateUser from './pages/pageCreateUser';
 import PageEditPesquisa from './pages/PageEditPesquisa';
 import PagePesquisaUser from './pages/pagePesquisaUser';
+import PagePesquisaUserEdit from './pages/pagePesquisaUserEdit';
 import PageRespondeUser from './pages/pageRespondeUser'; // Importe a nova tela
 
 const Stack = createStackNavigator();
@@ -106,6 +107,7 @@ const App = () => {
         <Stack.Screen name="PageCreatePergunta" component={PageCreatePergunta} options={{ title: 'Criar Pesquisa' }} />
         <Stack.Screen name="pageRespondeUser" component={PageRespondeUser} options={{ title: 'Responda à Pesquisa' }} />
         <Stack.Screen name="PageEditPesquisa" component={PageEditPesquisa} options={{ title: 'Edite à Pesquisa' }} />
+        <Stack.Screen name="PagePesquisaUserEdit" component={PagePesquisaUserEdit} options={{ title: 'Pesquisa de Usuário' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
