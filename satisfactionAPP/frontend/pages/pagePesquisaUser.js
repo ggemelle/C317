@@ -35,9 +35,10 @@ const PagePesquisaUser = ({ route }) => {
     }/${dataObj.getFullYear()}`;
   };
 
-  const handlePesquisaSelecionada = (id) => {
-    console.log(`Pesquisa selecionada: ${id}`);
-    navigation.navigate('pageRespondeUser', { pesquisaId: id });
+  const handlePesquisaSelecionada = (research_id) => {
+
+    console.log(`Pesquisa selecionada: ${research_id}`);
+    navigation.navigate('pageRespondeUser', {employeeId, research_id });
   };
 
   const renderPesquisaItem = ({ item }) => (

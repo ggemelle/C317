@@ -1,49 +1,67 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Lupa from "../assets/lupa.png";
 
-const PageRespondeUser = () => {
+const PageRespondeUser = ({ route }) => {
+  const { research_id, employee_id } = route.params;
   const { width, height } = Dimensions.get('window');
-  const [selectedValues, setSelectedValues] = useState({
-    pergunta1: '',
-    pergunta2: '',
-    pergunta3: '',
-    pergunta4: '',
-  });
+  const [selectedValues, setSelectedValues] = useState({});
+  const [questions, setQuestions] = useState([]);
+  
+  const options = ['Muito bom', 'Bom', 'Regular', 'Ruim', 'Muito ruim'];
 
-  const handleSelectValue = (pergunta, value) => {
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch(`http://10.0.2.2:3333/questions?research_id=${research_id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setQuestions(data); // Atualiza o estado com as perguntas retornadas pela API
+        } else {
+          console.error('Erro ao buscar perguntas:', response.status);
+        }
+      } catch (error) {
+        console.log(research_id);
+        console.error('Erro ao conectar à API:', error);
+      }
+    };
+
+    fetchQuestions();
+  }, [research_id]);
+
+  const handleSelectValue = (questionId, value) => {
     setSelectedValues({
       ...selectedValues,
-      [pergunta]: value,
+      [questionId]: value,
     });
   };
-
-  const options = ['Muito bom', 'Bom', 'Regular', 'Ruim', 'Muito ruim'];
 
   return (
     <View style={styles.container}>
       <Image style={styles.magnifyingGlassElementBackIcon} resizeMode="contain" source={Lupa} />
       <Text style={styles.title}>CAPTALIS</Text>
 
-      <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>PERGUNTA 1 (Peso 20) :</Text>
-        <View style={styles.optionsContainer}>
-          {options.map((label, index) => (
-            <TouchableOpacity
-              key={label}
-              style={[
-                styles.optionButton,
-                selectedValues.pergunta1 === label && styles.optionButtonSelected,
-              ]}
-              onPress={() => handleSelectValue('pergunta1', label)}
-            >
-              <Text style={styles.optionButtonText}>{label}</Text>
-            </TouchableOpacity>
-          ))}
+      {questions.map((question) => (
+        <View key={question.question_id} style={styles.questionContainer}>
+          <Text style={styles.questionText}>
+            {question.question_description} (Peso {question.question_weight})
+          </Text>
+          <View style={styles.optionsContainer}>
+            {options.map((label) => (
+              <TouchableOpacity
+                key={label}
+                style={[
+                  styles.optionButton,
+                  selectedValues[question.question_id] === label && styles.optionButtonSelected,
+                ]}
+                onPress={() => handleSelectValue(question.question_id, label)}
+              >
+                <Text style={styles.optionButtonText}>{label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
-      </View>
-
-      {/* Repita o bloco acima para PERGUNTA 2, PERGUNTA 3 e PERGUNTA 4 */}
+      ))}
     </View>
   );
 };
@@ -78,7 +96,7 @@ const styles = StyleSheet.create({
   optionButton: {
     backgroundColor: '#fff',
     borderRadius: 25,
-    width: 80, // Ajuste para caber o texto
+    width: 80,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
