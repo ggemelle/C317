@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View, Button, Alert } from 'react-native';
 import Lupa from "../assets/lupa.png";
 
 const PageRespondeUser = ({ route }) => {
-  const { research_id, employee_id } = route.params;
+  const { research_id, employeeId } = route.params;
   const { width, height } = Dimensions.get('window');
   const [selectedValues, setSelectedValues] = useState({});
   const [questions, setQuestions] = useState([]);
   
-  const options = ['Muito bom', 'Bom', 'Regular', 'Ruim', 'Muito ruim'];
+  const options = {
+    'Muito bom': 5,
+    'Bom': 4,
+    'Regular': 3,
+    'Ruim': 2,
+    'Muito ruim': 1
+  };
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -29,11 +35,37 @@ const PageRespondeUser = ({ route }) => {
     fetchQuestions();
   }, [research_id]);
 
-  const handleSelectValue = (questionId, value) => {
+  const handleSelectValue = (questionId, label) => {
     setSelectedValues({
       ...selectedValues,
-      [questionId]: value,
+      [questionId]: label,
     });
+  };
+
+  const submitAnswers = async () => {
+    try {
+      const responses = Object.entries(selectedValues).map(([questionId, label]) => ({
+        answer_value: options[label],
+        question_id: parseInt(questionId),
+        research_id: research_id,
+        employee_id: employeeId,
+      }));
+
+      for (const response of responses) {
+        await fetch('http://10.0.2.2:3333/answers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(response),
+        });
+      }
+
+      Alert.alert('Sucesso', 'Respostas enviadas com sucesso!');
+    } catch (error) {
+      console.error('Erro ao conectar à API para enviar respostas:', error);
+      Alert.alert('Erro', 'Erro ao enviar respostas.');
+    }
   };
 
   return (
@@ -47,7 +79,7 @@ const PageRespondeUser = ({ route }) => {
             {question.question_description} (Peso {question.question_weight})
           </Text>
           <View style={styles.optionsContainer}>
-            {options.map((label) => (
+            {Object.keys(options).map((label) => (
               <TouchableOpacity
                 key={label}
                 style={[
@@ -62,6 +94,10 @@ const PageRespondeUser = ({ route }) => {
           </View>
         </View>
       ))}
+
+      <TouchableOpacity style={styles.saveButton} onPress={submitAnswers}>
+        <Text style={styles.saveButtonText}>Salvar</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -114,6 +150,18 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#333',
     textAlign: 'center',
+  },
+  saveButton: {
+    backgroundColor: '#004aad',
+    borderRadius: 25,
+    width: '60%',
+    paddingVertical: 15,
+    alignItems: 'center',
+    marginTop: 30,
+  },
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 18,
   },
 });
 
