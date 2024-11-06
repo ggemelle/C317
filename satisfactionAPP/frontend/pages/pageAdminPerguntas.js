@@ -29,13 +29,6 @@ const PageAdminPerguntas = ({ route, navigation }) => {
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('PagePesquisaUser', {employeeId})} // Navegação para a tela PagePesquisaUser ao excluir pesquisa
-        >
-          <Text style={styles.buttonText}>Excluir uma pesquisa</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={styles.button} 
           onPress={() => navigation.navigate('PagePesquisaUser', {employeeId})} // Navegação para a tela PagePesquisaUser ao visualizar pesquisas
         >
           <Text style={styles.buttonText}>Visualizar pesquisas</Text>
