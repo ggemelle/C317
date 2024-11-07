@@ -22,18 +22,44 @@ const PageRespondeUser = ({ route }) => {
         const response = await fetch(`http://10.0.2.2:3333/questions?research_id=${research_id}`);
         if (response.ok) {
           const data = await response.json();
-          setQuestions(data); // Atualiza o estado com as perguntas retornadas pela API
+          setQuestions(data);
+          fetchExistingAnswers(data); // Chama a função para buscar respostas existentes após carregar as perguntas
         } else {
           console.error('Erro ao buscar perguntas:', response.status);
         }
       } catch (error) {
-        console.log(research_id);
         console.error('Erro ao conectar à API:', error);
       }
     };
 
+    const fetchExistingAnswers = async (questions) => {
+      try {
+        const initialValues = {};
+        for (const question of questions) {
+          const response = await fetch(`http://10.0.2.2:3333/answers?question_id=${question.question_id}&employee_id=${employeeId}`);
+          if (response.ok) {
+            const answers = await response.json();
+            answers.forEach((answer) => {
+              const label = Object.keys(options).find(key => options[key] === answer.answer_value);
+              if (label) {
+                initialValues[answer.question_id] = label;
+              }
+            });
+          } else if (response.status === 404) {
+            console.log(`Nenhuma resposta existente encontrada para a pergunta ${question.question_id}`);
+            // Não faz nada para manter o botão desativado
+          } else {
+            console.error(`Erro ao buscar resposta para a pergunta ${question.question_id}:`, response.status);
+          }
+        }
+        setSelectedValues(initialValues); // Define somente valores que foram encontrados
+      } catch (error) {
+        console.error('Erro ao conectar à API para buscar respostas:', error);
+      }
+    };
+
     fetchQuestions();
-  }, [research_id]);
+  }, [research_id, employeeId]);
 
   const handleSelectValue = (questionId, label) => {
     setSelectedValues({
@@ -50,23 +76,40 @@ const PageRespondeUser = ({ route }) => {
         research_id: research_id,
         employee_id: employeeId,
       }));
-
+  
       for (const response of responses) {
-        await fetch('http://10.0.2.2:3333/answers', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(response),
-        });
+        // Verifica se já existe uma resposta selecionada para usar PUT ou POST
+        const existingAnswer = await fetch(`http://10.0.2.2:3333/answers?question_id=${response.question_id}&employee_id=${employeeId}`);
+        
+        if (existingAnswer.ok) {
+          // Se a resposta já existe, usa o PUT para atualizar
+          await fetch(`http://10.0.2.2:3333/answers`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(response),
+          });
+        } else if (existingAnswer.status === 404) {
+          // Se não há resposta (404), usa o POST para criar uma nova
+          await fetch('http://10.0.2.2:3333/answers', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(response),
+          });
+        } else {
+          console.error(`Erro ao verificar resposta existente para a pergunta ${response.question_id}:`, existingAnswer.status);
+        }
       }
-
+  
       Alert.alert('Sucesso', 'Respostas enviadas com sucesso!');
     } catch (error) {
       console.error('Erro ao conectar à API para enviar respostas:', error);
       Alert.alert('Erro', 'Erro ao enviar respostas.');
     }
-  };
+  };  
 
   return (
     <View style={styles.container}>

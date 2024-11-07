@@ -28,6 +28,8 @@ router.get('/employee', employeeMiddleware.validateBodyGetEmployee, employeeCont
 
 
 router.post('/answers', answerMiddleware.validateBodyCreateAnswer, answerController.addAnswer);
-router.get('/answers', answerMiddleware.validateParameterGetAnswerByQuestion, answerController.getAnswersByQuestion);
+router.put('/answers', answerMiddleware.validateBodyUpdateAnswer, answerController.updateAnswer);
+router.get('/answers', answerMiddleware.validateParameterGetAnswerByEmployeeQuestion, answerController.getAnswersByEmployeeQuestion);
+router.get('/answers/employee', answerMiddleware.validateParameterGetAnswerByEmployee, answerController.getAnswersByEmployee);
 
 module.exports = router;

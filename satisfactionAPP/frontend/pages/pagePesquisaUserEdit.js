@@ -35,16 +35,16 @@ const PagePesquisaUserEdit = ({ route }) => {
     }/${dataObj.getFullYear()}`;
   };
 
-  const handlePesquisaSelecionada = (research_id) => {
+  const handlePesquisaSelecionada = (research_id, research_name) => {
 
     console.log(`Pesquisa selecionada: ${research_id}`);
-    navigation.navigate('PageEditPesquisa', {employeeId, research_id });
+    navigation.navigate('PageEditPesquisa', {employeeId, research_id, research_name });
   };
 
   const renderPesquisaItem = ({ item }) => (
     <TouchableOpacity
       style={styles.pesquisaItem}
-      onPress={() => handlePesquisaSelecionada(item.research_id)}
+      onPress={() => handlePesquisaSelecionada(item.research_id, item.research_name)}
     >
       <Text style={styles.pesquisaText}>{item.research_name}</Text>
       <Text style={styles.pesquisaDate}>Data: {formatarData(item.research_date)}</Text>
