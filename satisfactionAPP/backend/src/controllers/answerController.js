@@ -30,9 +30,17 @@ const getAnswersByEmployee = async(req, res) => {
     return res.status(200).json(caughtAnswerByEmployee[0]);
 };
 
+const deleteAnswerByQuestion = async(req, res) => {
+    const {question_id} = req.query;
+    const deletedAnswer = await answerModel.deleteAnswerByQuestion({question_id});
+
+    return res.status(200).json(deletedAnswer);
+};
+
 module.exports = {    
     getAnswersByEmployeeQuestion,
     getAnswersByEmployee,
     addAnswer,
-    updateAnswer
+    updateAnswer,
+    deleteAnswerByQuestion
 };

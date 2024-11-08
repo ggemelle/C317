@@ -31,5 +31,6 @@ router.post('/answers', answerMiddleware.validateBodyCreateAnswer, answerControl
 router.put('/answers', answerMiddleware.validateBodyUpdateAnswer, answerController.updateAnswer);
 router.get('/answers', answerMiddleware.validateParameterGetAnswerByEmployeeQuestion, answerController.getAnswersByEmployeeQuestion);
 router.get('/answers/employee', answerMiddleware.validateParameterGetAnswerByEmployee, answerController.getAnswersByEmployee);
+router.delete('/answers', answerMiddleware.validateParameterDeleteAnswerByQuestion, answerController.deleteAnswerByQuestion);
 
 module.exports = router;

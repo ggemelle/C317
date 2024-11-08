@@ -36,9 +36,18 @@ const getAnswersByEmployee = async (idEmployee) => {
     return caughtAnswersByEmployee;
 }
 
+const deleteAnswerByQuestion = async (questionId) => {
+    const {question_id} = questionId;
+
+    const deletedAnswerByQuestion = await connection.execute(`DELETE FROM answer WHERE question_id = ${question_id};`);
+
+    return deletedAnswerByQuestion;
+}
+
 module.exports = {
     getAnswersByEmployeeQuestion,
     addAnswer,
     getAnswersByEmployee,
-    updateAnswer
+    updateAnswer,
+    deleteAnswerByQuestion
 }

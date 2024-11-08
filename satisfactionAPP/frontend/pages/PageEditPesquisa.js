@@ -45,7 +45,8 @@ const PageEditPesquisa = ({ route, navigation }) => {
     };
 
     try {
-      const response = await fetch(`http://10.0.2.2:3333/researches`, {
+      // Atualiza o título da pesquisa
+      const researchResponse = await fetch(`http://10.0.2.2:3333/researches`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -53,12 +54,38 @@ const PageEditPesquisa = ({ route, navigation }) => {
         body: JSON.stringify(body),
       });
 
-      if (response.ok) {
-        Alert.alert('Sucesso', 'As alterações foram salvas com sucesso.');
-        navigation.goBack();
+      if (researchResponse.ok) {
+        // Atualiza cada pergunta individualmente
+        const questionPromises = questions.map((question) => {
+          const questionBody = {
+            description: question.question_description,
+            weight: question.question_weight,
+            question_id: question.question_id,
+          };
+
+          return fetch(`http://10.0.2.2:3333/questions`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(questionBody),
+          });
+        });
+
+        const questionResponses = await Promise.all(questionPromises);
+
+        // Verifica se todas as requisições de pergunta foram bem-sucedidas
+        const allQuestionsUpdated = questionResponses.every((response) => response.ok);
+        if (allQuestionsUpdated) {
+          Alert.alert('Sucesso', 'As alterações foram salvas com sucesso.');
+          navigation.goBack();
+        } else {
+          console.error('Erro ao salvar alterações em uma ou mais perguntas.');
+          Alert.alert('Erro', 'Não foi possível salvar todas as alterações nas perguntas.');
+        }
       } else {
-        console.error('Erro ao salvar alterações:', response.status);
-        Alert.alert('Erro', 'Não foi possível salvar as alterações.');
+        console.error('Erro ao salvar título da pesquisa:', researchResponse.status);
+        Alert.alert('Erro', 'Não foi possível salvar o título da pesquisa.');
       }
     } catch (error) {
       console.error('Erro ao conectar à API:', error);
@@ -66,20 +93,39 @@ const PageEditPesquisa = ({ route, navigation }) => {
     }
   };
 
-  // Função para excluir a pesquisa
   const handleDeleteSurvey = () => {
     Alert.alert(
       "Excluir Pesquisa",
       "Tem certeza de que deseja excluir esta pesquisa?",
       [
         { text: "Cancelar", style: "cancel" },
-        { text: "Excluir", style: "destructive", onPress: () => {
-          console.log('Pesquisa excluída');
-          navigation.goBack();
-        }}
+        { 
+          text: "Excluir", 
+          style: "destructive", 
+          onPress: async () => {
+            try {
+              // Deleta a pesquisa
+              const researchResponse = await fetch(`http://10.0.2.2:3333/researches?research_id=${research_id}`, {
+                method: 'DELETE',
+              });
+  
+              if (researchResponse.ok) {
+                Alert.alert("Sucesso", "Sua pesquisa foi excluída!");
+                navigation.navigate('PageAdminPerguntas', {employeeId});
+              } else {
+                console.error('Erro ao excluir pesquisa:', researchResponse.status);
+                Alert.alert("Erro", "Não foi possível excluir a pesquisa.");
+              }
+            } catch (error) {
+              console.error('Erro ao conectar à API:', error);
+              Alert.alert("Erro", "Ocorreu um erro ao excluir a pesquisa.");
+            }
+            navigation.navigate('PagePesquisaUserEdit', {employeeId});
+          }
+        }
       ]
     );
-  };
+  };  
 
   return (
     <ScrollView style={styles.container}>
@@ -107,18 +153,20 @@ const PageEditPesquisa = ({ route, navigation }) => {
                 setQuestions(newQuestions);
               }}
             />
-
-            <TextInput
-              style={styles.input}
-              placeholder="Nota (1 a 10)"
-              value={question.question_weight.toString()}
-              onChangeText={(text) => {
-                const newQuestions = [...questions];
-                newQuestions[index].question_weight = parseInt(text, 10);
-                setQuestions(newQuestions);
-              }}
-              keyboardType="numeric"
-            />
+              <TextInput
+                style={styles.input}
+                placeholder="Nota (1 a 10)"
+                value={question.question_weight ? question.question_weight.toString() : ''}
+                onChangeText={(text) => {
+                  const newQuestions = [...questions];
+                  const parsedWeight = parseInt(text, 10);
+                  
+                  // Define o peso apenas se for um número válido
+                  newQuestions[index].question_weight = isNaN(parsedWeight) ? '' : parsedWeight;
+                  setQuestions(newQuestions);
+                }}
+                keyboardType="numeric"
+              />
           </View>
         ))
       )}

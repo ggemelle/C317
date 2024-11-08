@@ -86,9 +86,23 @@ const validateParameterGetAnswerByEmployee = (req, res, next) => {
     next();
 };
 
+const validateParameterDeleteAnswerByQuestion = (req, res, next) => {
+    const {question_id} = req.query;
+
+    if(question_id == undefined) {
+        return res.status(400).json({message: 'The parameter question_id is required.'});
+    }
+    if(question_id == '') {
+        return res.status(400).json({message: 'The parameter question_id cannot be empty.'});
+    }
+
+    next();
+};
+
 module.exports = {
     validateBodyCreateAnswer,
     validateParameterGetAnswerByEmployeeQuestion,
     validateParameterGetAnswerByEmployee,
-    validateBodyUpdateAnswer
+    validateBodyUpdateAnswer,
+    validateParameterDeleteAnswerByQuestion
 };
