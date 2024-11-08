@@ -21,9 +21,7 @@ const getResearchesByEmployee = async (idEmployee) => {
 
     const {employee_id} = idEmployee;
 
-    const getResearchesByEmployee = await connection.execute(`SELECT r.* FROM research r 
-        JOIN employee e ON r.employee_id = e.employee_id
-        WHERE e.employee_id = ${employee_id};`);
+    const getResearchesByEmployee = await connection.execute(`SELECT * FROM research`)
         
     return getResearchesByEmployee;
 };
