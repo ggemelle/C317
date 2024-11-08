@@ -6,9 +6,11 @@ import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View 
 import Inatel from "./assets/inatel.png";
 import Lupa from "./assets/lupa.png";
 import PageAdminPerguntas from './pages/pageAdminPerguntas';
+import PageAdminRespostas from './pages/pageAdminRespostas';
 import PageCreatePergunta from './pages/pageCreatePergunta';
 import PageCreateUser from './pages/pageCreateUser';
 import PageEditPesquisa from './pages/PageEditPesquisa';
+import PagePesquisaAdminRespostas from './pages/pagePesquisaAdminRespostas';
 import PagePesquisaUser from './pages/pagePesquisaUser';
 import PagePesquisaUserEdit from './pages/pagePesquisaUserEdit';
 import PageRespondeUser from './pages/pageRespondeUser'; // Importe a nova tela
@@ -108,6 +110,8 @@ const App = () => {
         <Stack.Screen name="pageRespondeUser" component={PageRespondeUser} options={{ title: 'Responda à Pesquisa' }} />
         <Stack.Screen name="PageEditPesquisa" component={PageEditPesquisa} options={{ title: 'Edite à Pesquisa' }} />
         <Stack.Screen name="PagePesquisaUserEdit" component={PagePesquisaUserEdit} options={{ title: 'Pesquisa de Usuário' }} />
+        <Stack.Screen name="PagePesquisaAdminRespostas" component={PagePesquisaAdminRespostas} options={{ title: 'Pesquisa de Usuário' }} />
+        <Stack.Screen name="PageAdminRespostas" component={PageAdminRespostas} options={{ title: 'Pagina do admin' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

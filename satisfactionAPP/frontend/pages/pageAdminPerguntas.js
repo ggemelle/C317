@@ -29,7 +29,7 @@ const PageAdminPerguntas = ({ route, navigation }) => {
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => navigation.navigate('PagePesquisaUser', {employeeId})} // Navegação para a tela PagePesquisaUser ao visualizar pesquisas
+          onPress={() => navigation.navigate('PagePesquisaAdminRespostas', {employeeId})} // Navegação para a tela PagePesquisaUser ao visualizar pesquisas
         >
           <Text style={styles.buttonText}>Visualizar pesquisas</Text>
         </TouchableOpacity>

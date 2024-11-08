@@ -1,37 +1,67 @@
-import * as React from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
-import Inatel from "../assets/inatel.png";
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import Lupa from "../assets/lupa.png";
 
-const PageAdminRespostas = () => {
-  // Simulação de dados de respostas de pesquisas
-  const respostasPesquisas = [
-    { id: '1', pesquisa: 'PESQUISA 1', resposta: 'Resposta da pesquisa 1' },
-    { id: '2', pesquisa: 'PESQUISA 2', resposta: 'Resposta da pesquisa 2' },
-    { id: '3', pesquisa: 'PESQUISA 3', resposta: 'Resposta da pesquisa 3' },
-    { id: '4', pesquisa: 'PESQUISA 4', resposta: 'Resposta da pesquisa 4' },
-  ];
+const PageAdminRespostas = ({ route }) => {
+  const { research_id } = route.params;
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState({});
 
-  // Função para renderizar cada item da lista de respostas
-  const renderItem = ({ item }) => (
-    <View style={styles.pesquisaContainer}>
-      <Text style={styles.pesquisaNome}>{item.pesquisa}</Text>
-      <Text style={styles.pesquisaResposta}>{item.resposta}</Text>
-    </View>
-  );
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch(`http://10.0.2.2:3333/questions?research_id=${research_id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setQuestions(data);
+        } else {
+          console.error('Erro ao buscar perguntas:', response.status);
+        }
+      } catch (error) {
+        console.error('Erro ao conectar à API:', error);
+      }
+    };
+
+    const fetchAnswers = async () => {
+      try {
+        const response = await fetch(`http://10.0.2.2:3333/results?research_id=${research_id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setAnswers(data);
+        } else {
+          console.error('Erro ao buscar respostas:', response.status);
+        }
+      } catch (error) {
+        console.error('Erro ao conectar à API para buscar respostas:', error);
+      }
+    };
+
+    fetchQuestions();
+    fetchAnswers();
+  }, [research_id]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.satisfactionapp}>SatisfactionAPP</Text>
-      <Text style={styles.verResultadoDe}>Ver resultado de pesquisas disponíveis</Text>
+      <Image style={styles.logo} source={Lupa} />
+      <Text style={styles.title}>CAPTALIS</Text>
 
-      <FlatList
-        data={respostasPesquisas}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listaContainer}
-      />
+      {questions.map((question) => (
+        <View key={question.question_id} style={styles.questionContainer}>
+          <Text style={styles.questionText}>{question.question_description}</Text>
 
-      <Image style={styles.images1Icon} source={Inatel} />
+          {answers[question.question_id] ? (
+            <View style={styles.answerContainer}>
+              <Text style={styles.answerText}>Muito bom: {answers[question.question_id]["Muito bom"] || 0}</Text>
+              <Text style={styles.answerText}>Bom: {answers[question.question_id]["Bom"] || 0}</Text>
+              <Text style={styles.answerText}>Regular: {answers[question.question_id]["Regular"] || 0}</Text>
+              <Text style={styles.answerText}>Ruim: {answers[question.question_id]["Ruim"] || 0}</Text>
+              <Text style={styles.answerText}>Muito ruim: {answers[question.question_id]["Muito ruim"] || 0}</Text>
+            </View>
+          ) : (
+            <Text style={styles.answerText}>Nenhuma resposta disponível</Text>
+          )}
+        </View>
+      ))}
     </View>
   );
 };
@@ -40,46 +70,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#D8DAD6',
-    alignItems: 'center', // Centraliza o conteúdo horizontalmente
-    paddingTop: 20, // Margem superior
-  },
-  satisfactionapp: {
-    fontSize: 42,
-    fontFamily: 'Inspiration-Regular',
-    color: '#fff',
-    marginBottom: 20, // Margem inferior
-  },
-  verResultadoDe: {
-    fontSize: 20,
-    fontFamily: 'Inter-Regular',
-    color: '#fff',
-    marginBottom: 20, // Margem inferior
-  },
-  listaContainer: {
+    alignItems: 'center',
     paddingHorizontal: 20,
-    flexGrow: 1, // Faz com que a lista ocupe o espaço disponível
   },
-  pesquisaContainer: {
+  title: {
+    fontSize: 40,
+    color: '#fff',
+    marginBottom: 30,
+    fontFamily: 'Cursive',
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginTop: 50,
+  },
+  questionContainer: {
+    marginBottom: 20,
+    width: '100%',
     backgroundColor: '#004aad',
     borderRadius: 10,
     padding: 15,
-    marginVertical: 10,
   },
-  pesquisaNome: {
+  questionText: {
     fontSize: 18,
-    fontFamily: 'Inter-Black',
     color: '#fff',
   },
-  pesquisaResposta: {
+  answerContainer: {
+    marginTop: 10,
+  },
+  answerText: {
     fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    color: '#fff',
-    marginTop: 5, // Espaço entre o nome e a resposta
-  },
-  images1Icon: {
-    width: 140,
-    height: 40,
-    marginBottom: 20, // Margem inferior para afastar da parte inferior
+    color: '#ff0',
   },
 });
 
